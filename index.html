@@ -32,195 +32,179 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6348225556465874" crossorigin="anonymous"></script>
 
     <style>
-        /* Base styling */
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --text-color: #333;
-            --light-bg: #f8f9fa;
-            --border-radius: 8px;
-            --box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
+        /* Reset all margins and padding */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-
+        
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--light-bg);
+            color: #333;
+            background-color: #f8f9fa;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        
+        /* Header styling */
+        header {
+            background-color: white;
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            flex-shrink: 0;
         }
-
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px 0;
-            flex-wrap: wrap;
-        }
-
+        
         .logo-container {
             display: flex;
             align-items: center;
-            margin-right: 20px;
+            justify-content: center;
         }
-
+        
         .logo {
-            height: 50px;
-            margin-right: 15px;
-            border-radius: var(--border-radius);
+            height: 40px;
+            margin-right: 10px;
+            border-radius: 8px;
         }
-
+        
         h1 {
-            color: var(--primary-color);
-            font-size: 2rem;
+            color: #2c3e50;
+            font-size: 1.8rem;
             font-weight: 600;
         }
-
+        
+        /* Description */
         .description {
-            max-width: 800px;
-            margin: 20px auto 30px;
+            padding: 15px 20px;
             text-align: center;
-            font-size: 1.1rem;
-            line-height: 1.7;
+            font-size: 0.95rem;
+            line-height: 1.5;
             color: #555;
-        }
-
-        /* App container */
-        .app-container {
             background-color: white;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--box-shadow);
-            margin-bottom: 40px;
+            margin-top: 5px;
+            flex-shrink: 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
-
-        /* Iframe styling */
-        iframe {
+        
+        /* Ad containers */
+        .ad-container {
             width: 100%;
-            height: 90vh;
-            border: none;
-            display: block;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #f9f9f9;
+            flex-shrink: 0;
+            height: 90px; /* Fixed height for ad containers */
         }
-
+        
+        /* Iframe container */
+        .iframe-container {
+            flex-grow: 1; /* Take up all available space */
+            width: 100%;
+            position: relative;
+        }
+        
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
         /* Footer */
         footer {
             text-align: center;
-            padding: 20px 0;
-            margin-top: 40px;
-            font-size: 0.9rem;
+            padding: 10px 0;
+            font-size: 0.8rem;
             color: #666;
             border-top: 1px solid #eee;
+            background-color: white;
+            flex-shrink: 0;
         }
-
-        /* Ad containers */
-        .ad-container {
-            margin: 20px 0;
-            text-align: center;
-            overflow: hidden;
-            width: 100%;
-        }
-
-        .ad-container-horizontal {
-            height: auto;
-            min-height: 90px;
-        }
-
-        .ad-container-vertical {
-            height: auto;
-            min-height: 250px;
-        }
-
+        
         /* Responsive adjustments */
         @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                text-align: center;
+            header {
+                padding: 10px 0;
             }
-
-            .logo-container {
-                margin-right: 0;
-                margin-bottom: 15px;
-            }
-
+            
             h1 {
-                font-size: 1.8rem;
+                font-size: 1.5rem;
             }
-
+            
             .description {
-                font-size: 1rem;
-                padding: 0 15px;
+                font-size: 0.9rem;
+                padding: 10px 15px;
             }
-
-            iframe {
-                height: 80vh;
+            
+            .ad-container {
+                height: 70px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <div class="logo-container">
-                <img src="https://raw.githubusercontent.com/IQSpatialco/placetrends.com/refs/heads/main/logo.avif" alt="PlaceTrends Logo" class="logo">
-                <h1>PlaceTrends</h1>
-            </div>
-        </header>
-
-        <p class="description">
-            PlaceTrends brings together a wide range of powerful datasets at the ZIP code level—making it easier to explore trends, uncover opportunities, and gain insights, all in one place. Whether you're a homebuyer, real estate or financial investor, or someone looking to identify economic opportunities, our platform is designed with you in mind.
-        </p>
-
-        <!-- Ad unit below description -->
-        <div class="ad-container ad-container-horizontal">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-6348225556465874"
-                 data-ad-slot="YOUR_AD_SLOT_ID_1"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
+    <header>
+        <div class="logo-container">
+            <img src="https://raw.githubusercontent.com/IQSpatialco/placetrends.com/refs/heads/main/logo.avif" alt="PlaceTrends Logo" class="logo">
+            <h1>PlaceTrends</h1>
         </div>
+    </header>
 
-        <div class="app-container">
-            <!-- Embed Replit App -->
-            <iframe 
-                title="PlaceTrends Application - Spatial Data Analysis Tool"
-                src="https://place-trends-rmkenv.replit.app/" 
-                allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; microphone; midi; payment; usb; vr; xr-spatial-tracking" 
-                sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts">
-            </iframe>
-        </div>
-
-        <!-- Ad unit below app container -->
-        <div class="ad-container ad-container-horizontal">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-6348225556465874"
-                 data-ad-slot="YOUR_AD_SLOT_ID_2"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-
-        <footer>
-            &copy; 2025 PlaceTrends. All rights reserved.
-        </footer>
+    <div class="description">
+        PlaceTrends brings together powerful datasets at the ZIP code level—making it easier to explore trends, uncover opportunities, and gain insights for homebuyers, real estate investors, and economic analysts.
     </div>
+    
+    <!-- Top ad container -->
+    <div class="ad-container">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-6348225556465874"
+             data-ad-slot="YOUR_AD_SLOT_ID_1"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+    
+    <!-- App iframe -->
+    <div class="iframe-container">
+        <iframe 
+            title="PlaceTrends Application - Spatial Data Analysis Tool"
+            src="https://place-trends-rmkenv.replit.app/" 
+            allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; microphone; midi; payment; usb; vr; xr-spatial-tracking" 
+            sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts">
+        </iframe>
+    </div>
+    
+    <!-- Bottom ad container -->
+    <div class="ad-container">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-6348225556465874"
+             data-ad-slot="YOUR_AD_SLOT_ID_2"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <footer>
+        &copy; 2025 PlaceTrends. All rights reserved.
+    </footer>
 
     <!-- Structured data for SEO -->
     <script type="application/ld+json">

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +18,7 @@
     <!-- Favicon - Note: For production, convert AVIF to ICO/PNG -->
     <link rel="icon" href="https://raw.githubusercontent.com/IQSpatialco/placetrends.com/refs/heads/main/logo.avif" type="image/avif">
     <!-- Fallback favicon for browsers that don't support AVIF -->
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> <!-- Make sure favicon.ico exists -->
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-L39ES96CQC"></script>
@@ -42,7 +43,7 @@
         html, body {
             height: 100%;
             width: 100%;
-            overflow: hidden;
+            overflow: hidden; /* Prevents main page scroll, focusing on iframe */
             display: flex;
             flex-direction: column;
         }
@@ -60,7 +61,7 @@
             padding: 15px 0;
             text-align: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            flex-shrink: 0;
+            flex-shrink: 0; /* Prevent header from shrinking */
         }
         
         .logo-container {
@@ -90,8 +91,8 @@
             color: #555;
             background-color: white;
             margin-top: 5px;
-            flex-shrink: 0;
-            max-width: 800px;
+            flex-shrink: 0; /* Prevent description from shrinking */
+            max-width: 800px; /* Limit width for readability */
             margin-left: auto;
             margin-right: auto;
         }
@@ -102,18 +103,23 @@
             text-align: center;
             padding: 10px 0;
             background-color: #f9f9f9;
-            flex-shrink: 0;
-            height: 90px; /* Fixed height for ad containers */
+            flex-shrink: 0; /* Prevent ad containers from shrinking */
+            min-height: 70px; /* Use min-height for flexibility */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         /* Iframe container */
         .iframe-container {
-            flex-grow: 1; /* Take up all available space */
+            flex-grow: 1; /* Take up all available vertical space */
             width: 100%;
-            position: relative;
-            background-color: #f0f0f0; /* Background in case iframe fails to load */
-            display: flex;
+            position: relative; /* Needed for absolute positioning of iframe */
+            background-color: #f0f0f0; /* Background in case iframe fails */
+            display: flex; /* Use flex to center fallback content */
             flex-direction: column;
+            justify-content: center; /* Center fallback vertically */
+            align-items: center; /* Center fallback horizontally */
         }
         
         iframe {
@@ -127,10 +133,18 @@
         
         /* Fallback content */
         .iframe-fallback {
-            display: none;
+            display: none; /* Hidden by default */
             text-align: center;
             padding: 30px;
-            margin: auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .iframe-fallback p {
+            margin-bottom: 15px;
+            color: #555;
         }
         
         .iframe-fallback a {
@@ -141,7 +155,11 @@
             text-decoration: none;
             border-radius: 4px;
             font-weight: bold;
-            margin-top: 15px;
+            transition: background-color 0.2s ease;
+        }
+
+        .iframe-fallback a:hover {
+            background-color: #2980b9;
         }
         
         /* Footer */
@@ -152,7 +170,7 @@
             color: #666;
             border-top: 1px solid #eee;
             background-color: white;
-            flex-shrink: 0;
+            flex-shrink: 0; /* Prevent footer from shrinking */
         }
         
         footer a {
@@ -180,7 +198,18 @@
             }
             
             .ad-container {
-                height: 70px;
+                min-height: 60px; /* Adjust min-height for smaller screens */
+            }
+        }
+        @media (max-width: 480px) {
+             h1 {
+                font-size: 1.3rem;
+            }
+            .logo {
+                height: 35px;
+            }
+             .description {
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -197,12 +226,12 @@
         PlaceTrends brings together powerful datasets at the ZIP code level—making it easier to explore trends, uncover opportunities, and gain insights for homebuyers, real estate investors, and economic analysts.
     </div>
     
-    <!-- Top ad container -->
+    <!-- Top ad container - REMEMBER TO REPLACE YOUR_AD_SLOT_ID_1 -->
     <div class="ad-container">
         <ins class="adsbygoogle"
-             style="display:block"
+             style="display:block; width:100%; height:90px;" <!-- Example dimensions, adjust as needed -->
              data-ad-client="ca-pub-6348225556465874"
-             data-ad-slot="YOUR_AD_SLOT_ID_1"
+             data-ad-slot="YOUR_AD_SLOT_ID_1" <!-- REPLACE THIS -->
              data-ad-format="auto"
              data-full-width-responsive="true"></ins>
         <script>
@@ -222,21 +251,22 @@
             loading="eager"
             importance="high"
             onload="this.style.opacity=1; document.getElementById('iframe-fallback').style.display='none';"
-            onerror="document.getElementById('iframe-fallback').style.display='block';"
-            style="opacity:0;transition:opacity 0.3s">
+            onerror="this.style.opacity=0; document.getElementById('iframe-fallback').style.display='block';" /* Show fallback on error */
+            style="opacity:0;transition:opacity 0.5s ease;"> /* Start hidden, fade in */
         </iframe>
+        <!-- Fallback content shown if iframe fails to load -->
         <div id="iframe-fallback" class="iframe-fallback">
-            <p>The PlaceTrends application may not be loading properly in this window.</p>
-            <a href="https://place-trends-rmkenv.replit.app/" target="_blank">Open PlaceTrends App</a>
+            <p>The PlaceTrends application could not be loaded directly.</p>
+            <a href="https://place-trends-rmkenv.replit.app/" target="_blank" rel="noopener noreferrer">Open PlaceTrends App in New Tab</a>
         </div>
     </div>
     
-    <!-- Bottom ad container -->
+    <!-- Bottom ad container - REMEMBER TO REPLACE YOUR_AD_SLOT_ID_2 -->
     <div class="ad-container">
         <ins class="adsbygoogle"
-             style="display:block"
+             style="display:block; width:100%; height:90px;" <!-- Example dimensions, adjust as needed -->
              data-ad-client="ca-pub-6348225556465874"
-             data-ad-slot="YOUR_AD_SLOT_ID_2"
+             data-ad-slot="YOUR_AD_SLOT_ID_2" <!-- REPLACE THIS -->
              data-ad-format="auto"
              data-full-width-responsive="true"></ins>
         <script>
@@ -257,33 +287,19 @@
         "url": "https://placetrends.com",
         "description": "PlaceTrends brings together powerful datasets at the ZIP code level—making it easier to explore trends, uncover opportunities, and gain insights.",
         "applicationCategory": "DataVisualization",
+        "operatingSystem": "All", /* Added for clarity */
+        "browserRequirements": "Requires JavaScript", /* Added for clarity */
         "offers": {
             "@type": "Offer",
-            "price": "0"
+            "price": "0",
+            "priceCurrency": "USD" /* Added for clarity */
+        },
+         "author": { /* Added author details */
+            "@type": "Organization",
+            "name": "PlaceTrends"
         }
     }
     </script>
     
-    <!-- Script to handle iframe loading issues -->
-    <script>
-        // Check if iframe loaded correctly after 5 seconds
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                var iframe = document.getElementById('placetrends-app');
-                var fallback = document.getElementById('iframe-fallback');
-                
-                try {
-                    // Try to access iframe content - will fail if blocked by CORS
-                    var iframeContent = iframe.contentWindow || iframe.contentDocument;
-                    if (!iframeContent) {
-                        fallback.style.display = 'block';
-                    }
-                } catch (e) {
-                    // If accessing iframe content fails, show fallback
-                    fallback.style.display = 'block';
-                }
-            }, 5000);
-        });
-    </script>
 </body>
 </html>

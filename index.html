@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,16 +8,18 @@
     <meta name="author" content="PlaceTrends">
     <meta property="og:title" content="PlaceTrends - Spatial Data Analysis Hub">
     <meta property="og:description" content="PlaceTrends brings together powerful datasets at the ZIP code level—making it easier to explore trends, uncover opportunities, and gain insights.">
-    <meta property="og:image" content="https://raw.githubusercontent.com/IQSpatialco/placetrends.com/refs/heads/main/logo.avif">
-    <meta property="og:url" content="https://placetrends.com">
+    <!-- Updated og:image path -->
+    <meta property="og:image" content="/assets/images/logo.avif">
+    <meta property="og:url" content="https://placetrends.com"> <!-- Assuming this is your custom domain -->
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <title>PlaceTrends - Spatial Data Analysis Hub</title>
 
-    <!-- Favicon - Note: For production, convert AVIF to ICO/PNG -->
-    <link rel="icon" href="https://raw.githubusercontent.com/IQSpatialco/placetrends.com/refs/heads/main/logo.avif" type="image/avif">
-    <!-- Fallback favicon for browsers that don't support AVIF -->
-    <link rel="icon" href="favicon.ico" type="image/x-icon"> <!-- Make sure favicon.ico exists -->
+    <!-- Favicon -->
+    <!-- Updated favicon paths -->
+    <link rel="icon" href="/assets/images/logo.avif" type="image/avif">
+    <!-- Fallback favicon - Make sure favicon.ico exists in /assets/images/ -->
+    <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-L39ES96CQC"></script>
@@ -39,7 +40,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         html, body {
             height: 100%;
             width: 100%;
@@ -47,14 +48,14 @@
             display: flex;
             flex-direction: column;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
             background-color: #f8f9fa;
         }
-        
+
         /* Header styling */
         header {
             background-color: white;
@@ -63,25 +64,25 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             flex-shrink: 0; /* Prevent header from shrinking */
         }
-        
+
         .logo-container {
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        
+
         .logo {
             height: 40px;
             margin-right: 10px;
             border-radius: 8px;
         }
-        
+
         h1 {
             color: #2c3e50;
             font-size: 1.8rem;
             font-weight: 600;
         }
-        
+
         /* Description */
         .description {
             padding: 15px 20px;
@@ -96,7 +97,7 @@
             margin-left: auto;
             margin-right: auto;
         }
-        
+
         /* Ad containers */
         .ad-container {
             width: 100%;
@@ -109,7 +110,7 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         /* Iframe container */
         .iframe-container {
             flex-grow: 1; /* Take up all available vertical space */
@@ -121,7 +122,7 @@
             justify-content: center; /* Center fallback vertically */
             align-items: center; /* Center fallback horizontally */
         }
-        
+
         iframe {
             position: absolute;
             top: 0;
@@ -130,7 +131,7 @@
             height: 100%;
             border: none;
         }
-        
+
         /* Fallback content */
         .iframe-fallback {
             display: none; /* Hidden by default */
@@ -141,12 +142,12 @@
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        
+
         .iframe-fallback p {
             margin-bottom: 15px;
             color: #555;
         }
-        
+
         .iframe-fallback a {
             display: inline-block;
             background-color: #3498db;
@@ -161,7 +162,7 @@
         .iframe-fallback a:hover {
             background-color: #2980b9;
         }
-        
+
         /* Footer */
         footer {
             text-align: center;
@@ -172,31 +173,32 @@
             background-color: white;
             flex-shrink: 0; /* Prevent footer from shrinking */
         }
-        
+
         footer a {
             color: #3498db;
             text-decoration: none;
+            margin: 0 5px; /* Add some spacing between links */
         }
-        
+
         footer a:hover {
             text-decoration: underline;
         }
-        
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             header {
                 padding: 10px 0;
             }
-            
+
             h1 {
                 font-size: 1.5rem;
             }
-            
+
             .description {
                 font-size: 0.9rem;
                 padding: 10px 15px;
             }
-            
+
             .ad-container {
                 min-height: 60px; /* Adjust min-height for smaller screens */
             }
@@ -211,13 +213,20 @@
              .description {
                 font-size: 0.85rem;
             }
+             footer {
+                font-size: 0.75rem; /* Slightly smaller font on very small screens */
+            }
+             footer a {
+                margin: 0 3px;
+            }
         }
     </style>
 </head>
 <body>
     <header>
         <div class="logo-container">
-            <img src="https://raw.githubusercontent.com/IQSpatialco/placetrends.com/refs/heads/main/logo.avif" alt="PlaceTrends Logo" class="logo">
+            <!-- Updated logo path -->
+            <img src="/assets/images/logo.avif" alt="PlaceTrends Logo" class="logo">
             <h1>PlaceTrends</h1>
         </div>
     </header>
@@ -225,7 +234,7 @@
     <div class="description">
         PlaceTrends brings together powerful datasets at the ZIP code level—making it easier to explore trends, uncover opportunities, and gain insights for homebuyers, real estate investors, and economic analysts.
     </div>
-    
+
     <!-- Top ad container - REMEMBER TO REPLACE YOUR_AD_SLOT_ID_1 -->
     <div class="ad-container">
         <ins class="adsbygoogle"
@@ -238,13 +247,13 @@
              (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
     </div>
-    
+
     <!-- App iframe with fallback -->
     <div class="iframe-container">
-        <iframe 
+        <iframe
             id="placetrends-app"
             title="PlaceTrends Application - Spatial Data Analysis Tool"
-            src="https://place-trends-rmkenv.replit.app/" 
+            src="https://place-trends-rmkenv.replit.app/"
             allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; microphone; midi; payment; usb; vr; xr-spatial-tracking"
             sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts allow-top-navigation"
             referrerpolicy="no-referrer"
@@ -260,7 +269,7 @@
             <a href="https://place-trends-rmkenv.replit.app/" target="_blank" rel="noopener noreferrer">Open PlaceTrends App in New Tab</a>
         </div>
     </div>
-    
+
     <!-- Bottom ad container - REMEMBER TO REPLACE YOUR_AD_SLOT_ID_2 -->
     <div class="ad-container">
         <ins class="adsbygoogle"
@@ -275,7 +284,10 @@
     </div>
 
     <footer>
-        &copy; 2025 PlaceTrends. All rights reserved. | <a href="privacy.html">Privacy Policy</a>
+        &copy; 2025 PlaceTrends. All rights reserved. |
+        <!-- Added link to Coming Soon page -->
+        <a href="/soon/">Coming Soon</a> |
+        <a href="/privacy/">Privacy Policy</a>
     </footer>
 
     <!-- Structured data for SEO -->
@@ -284,22 +296,22 @@
         "@context": "https://schema.org",
         "@type": "WebApplication",
         "name": "PlaceTrends",
-        "url": "https://placetrends.com",
+        "url": "https://placetrends.com", // Assuming this is your custom domain
         "description": "PlaceTrends brings together powerful datasets at the ZIP code level—making it easier to explore trends, uncover opportunities, and gain insights.",
         "applicationCategory": "DataVisualization",
-        "operatingSystem": "All", /* Added for clarity */
-        "browserRequirements": "Requires JavaScript", /* Added for clarity */
+        "operatingSystem": "All",
+        "browserRequirements": "Requires JavaScript",
         "offers": {
             "@type": "Offer",
             "price": "0",
-            "priceCurrency": "USD" /* Added for clarity */
+            "priceCurrency": "USD"
         },
-         "author": { /* Added author details */
+         "author": {
             "@type": "Organization",
             "name": "PlaceTrends"
         }
     }
     </script>
-    
+
 </body>
 </html>

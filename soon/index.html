@@ -4,60 +4,111 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exciting New Features Coming Soon!</title>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6348225556465874" crossorigin="anonymous"></script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             line-height: 1.6;
             color: #333;
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 0 15px;
+            margin: 0;
+            padding: 0;
             background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
+        
+        /* Main layout with side ads */
+        .page-layout {
+            display: flex;
+            flex-grow: 1;
+        }
+        
+        /* Side ad containers */
+        .side-ad-container {
+            width: 160px; /* Standard skyscraper ad width */
+            background-color: #f0f0f0;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+        }
+        
+        /* Top and bottom ad containers */
+        .ad-container {
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #f0f0f0;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Main content container */
+        .main-content {
+            flex-grow: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+        
         .container {
             background-color: #fff;
             padding: 25px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
+        
         h1, h2, h3 {
             color: #2c3e50;
             margin-bottom: 0.5em;
         }
+        
         h1 {
             text-align: center;
             border-bottom: 2px solid #eee;
             padding-bottom: 15px;
             margin-bottom: 25px;
         }
+        
         h2 {
             margin-top: 30px;
             border-bottom: 1px solid #eee;
             padding-bottom: 8px;
         }
+        
         .feature-section {
             margin-bottom: 30px;
         }
+        
         .feature {
             margin-bottom: 20px;
             padding-left: 10px;
             border-left: 3px solid #3498db;
         }
+        
         .feature h3 {
             font-size: 1.1em;
             color: #3498db;
         }
+        
         .feature p {
             font-size: 0.95em;
             color: #555;
             margin-bottom: 5px;
         }
+        
         .mock-data {
             font-style: italic;
             color: #777;
             font-size: 0.9em;
             margin-top: 5px;
         }
+        
         .chart-placeholder {
             background-color: #e9ecef;
             border: 1px dashed #ced4da;
@@ -68,166 +119,297 @@
             border-radius: 4px;
             margin-top: 10px;
         }
+        
+        .chart-placeholder img {
+            max-width: 100%;
+            height: auto;
+        }
+        
         footer {
             text-align: center;
-            margin-top: 30px;
+            padding: 15px 0;
             font-size: 0.9em;
             color: #888;
+            background-color: #fff;
+            border-top: 1px solid #eee;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .side-ad-container {
+                width: 120px; /* Smaller on medium screens */
+            }
+        }
+        
+        @media (max-width: 768px) {
+            /* Stack layout on smaller screens */
+            .page-layout {
+                flex-direction: column;
+            }
+            
+            .side-ad-container {
+                width: 100%;
+                height: auto;
+                min-height: 100px;
+                flex-direction: row;
+                justify-content: center;
+            }
+            
+            .side-ad-vertical {
+                display: none; /* Hide vertical ads */
+            }
+            
+            .side-ad-horizontal {
+                display: block; /* Show horizontal ads */
+                width: 100%;
+                max-width: 728px; /* Standard leaderboard width */
+                height: 90px;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .side-ad-vertical {
+                display: block; /* Show vertical ads on larger screens */
+                width: 160px;
+                height: 600px; /* Standard skyscraper height */
+                margin-bottom: 20px;
+            }
+            
+            .side-ad-horizontal {
+                display: none; /* Hide horizontal ads on larger screens */
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Coming Soon: Deeper Insights!</h1>
-        <p>We're working hard behind the scenes to bring you a host of powerful new data features. Get ready to explore trends, understand local dynamics, and gain valuable insights like never before. Here's a sneak peek at what's coming:</p>
-
-        <div class="feature-section">
-            <h2>Population & Demographics</h2>
-            <div class="feature">
-                <h3>Population Size & Growth</h3>
-                <p>Track the latest population figures and see how areas are growing or shrinking over time.</p>
-                <p class="mock-data">Example: Current Population: 150,345 | Growth (YoY): +1.8%</p>
-                <div class="chart-placeholder">
-                    <img src="https://via.placeholder.com/800x400?text=Population+Trend+Chart" alt="Population trend over last 5 years" width="100%">
-                </div>
-            </div>
-            <div class="feature">
-                <h3>Median Age</h3>
-                <p>Understand the age distribution of the population.</p>
-                <p class="mock-data">Example: Median Age: 38.5 years</p>
-            </div>
-            <div class="feature">
-                <h3>Educational Attainment</h3>
-                <p>See the percentage of the population with college degrees and detailed breakdowns of education levels.</p>
-                <p class="mock-data">Example: Bachelor's Degree or Higher: 42%</p>
-                <div class="chart-placeholder">
-                    <img src="https://via.placeholder.com/800x400?text=Educational+Attainment+Chart" alt="Bar chart showing distribution of educational attainment" width="100%">
-                </div>
-            </div>
-             <div class="feature">
-                <h3>Household Composition</h3>
-                <p>Explore data on household types, average household size, and the prevalence of multigenerational households.</p>
-                <p class="mock-data">Example: Average Household Size: 2.6 | Multigenerational Households: 5.1%</p>
-            </div>
-            <div class="feature">
-                <h3>Migration Patterns</h3>
-                <p>Analyze domestic migration trends to see where people are moving to and from.</p>
-                <p class="mock-data">Example: Net Domestic Migration (1 Year): +1,250 people</p>
-            </div>
-        </div>
-
-        <div class="feature-section">
-            <h2>Economy & Income</h2>
-            <div class="feature">
-                <h3>Median Household Income (MHI)</h3>
-                <p>Access current median household income data and track its growth over the past 5 years.</p>
-                <p class="mock-data">Example: MHI: $82,100 | 5-Year Growth: +15.5%</p>
-               <div class="chart-placeholder">
-                    <img src="https://via.placeholder.com/800x400?text=Median+Household+Income+Trend" alt="Line chart showing MHI trend over 5 years" width="100%">
-                </div>
-            </div>
-             <div class="feature">
-                <h3>Income Inequality</h3>
-                <p>Measure income distribution using standard indices.</p>
-                <p class="mock-data">Example: Gini Index: 0.48</p>
-            </div>
-            <div class="feature">
-                <h3>Poverty Rate</h3>
-                <p>View the percentage of the population living below the federal poverty line.</p>
-                <p class="mock-data">Example: Poverty Rate: 11.2%</p>
-            </div>
-            <div class="feature">
-                <h3>Remote Work Adoption</h3>
-                <p>See the percentage of the workforce working remotely.</p>
-                <p class="mock-data">Example: Remote Workers: 18.5%</p>
-            </div>
-            <div class="feature">
-                <h3>Employment by Industry & Occupation</h3>
-                <p>Understand the local job market with breakdowns by industry and occupation type, including self-employment rates.</p>
-                <div class="chart-placeholder">
-                    <img src="https://via.placeholder.com/800x400?text=Employment+by+Industry" alt="Pie chart showing top 5 employing industries" width="100%">
-                </div>
-            </div>
-        </div>
-
-        <div class="feature-section">
-            <h2>Housing Market Trends</h2>
-            <div class="feature">
-                <h3>Home Value Index & Growth</h3>
-                <p>Track typical home values and their appreciation rates month-over-month, year-over-year, and over 5 years.</p>
-                <p class="mock-data">Example: Median Home Value: $450,000 | YoY Growth: +6.2% | 5-Year Growth: +45%</p>
-               <div class="chart-placeholder">
-                    <img src="https://via.placeholder.com/800x400?text=Home+Value+Index+Trend" alt="Line chart showing home value index trend" width="100%">
-                </div>
-            </div>
-            <div class="feature">
-                <h3>Rental Rate Index & Growth</h3>
-                <p>Monitor typical rental rates and their year-over-year changes.</p>
-                <p class="mock-data">Example: Median Rent: $2,100/month | YoY Growth: +4.5%</p>
-                <div class="chart-placeholder">
-                    <img src="https://via.placeholder.com/800x400?text=Rental+Rate+Index+Trend" alt="Line chart showing rental rate index trend" width="100%">
-                </div>
-            </div>
-            <div class="feature">
-                <h3>For-Sale Inventory Levels</h3>
-                <p>See the current number of homes for sale and compare it to historical averages and recent changes (MoM).</p>
-                <p class="mock-data">Example: Active Listings: 520 | Inventory vs Avg: +5% | MoM Change: +2.1%</p>
-            </div>
-             <div class="feature">
-                <h3>New Listings & Price Changes</h3>
-                <p>Track the flow of new properties hitting the market and the frequency of price reductions.</p>
-                <p class="mock-data">Example: New Listings (Last Month): 150 | Listings with Price Cut: 15%</p>
-            </div>
-            <div class="feature">
-                <h3>Days on Market (DOM)</h3>
-                <p>Understand how quickly homes are selling and how that compares to last year.</p>
-                <p class="mock-data">Example: Median DOM: 28 days | YoY Change: -5 days</p>
-            </div>
-             <div class="feature">
-                <h3>Housing Units & Growth</h3>
-                <p>View the total number of housing units and the rate of new construction (via permits and unit growth).</p>
-                <p class="mock-data">Example: Total Housing Units: 65,000 | YoY Growth: +1.2% | New Permits (YTD): 350</p>
-            </div>
-             <div class="feature">
-                <h3>Vacancy & Homeownership Rates</h3>
-                <p>Analyze housing occupancy, including overall vacancy rates, homeownership rates, and details on seasonal/vacant owned homes.</p>
-                <p class="mock-data">Example: Homeownership Rate: 65% | Vacancy Rate: 4.5%</p>
-            </div>
-        </div>
-
-         <div class="feature-section">
-            <h2>Affordability & Costs</h2>
-            <div class="feature">
-                <h3>Home Price to Income Ratio</h3>
-                <p>Compare typical home values to median household incomes to gauge local affordability relative to historical norms.</p>
-                <p class="mock-data">Example: Value/Income Ratio: 5.5 | Over/Under Valued vs Norm: +10%</p>
-            </div>
-             <div class="feature">
-                <h3>Rent Burden</h3>
-                <p>See typical rent costs as a percentage of median household income.</p>
-                <p class="mock-data">Example: Rent as % of Income: 31%</p>
-            </div>
-             <div class="feature">
-                <h3>Mortgage Payments & Affordability</h3>
-                <p>Estimate typical mortgage payments based on current rates and calculate the estimated salary needed to comfortably afford a median-priced home.</p>
-                <p class="mock-data">Example: Est. Monthly Mortgage: $2,800 | Salary Needed: $120,000</p>
-            </div>
-            <div class="feature">
-                <h3>Property & Sales Tax Rates</h3>
-                <p>Access local property tax rates and state/local sales tax information, including year-over-year changes.</p>
-                <p class="mock-data">Example: Effective Property Tax Rate: 1.15% | Sales Tax: 7.25%</p>
-            </div>
-             <div class="feature">
-                <h3>Buy vs. Rent Analysis</h3>
-                <p>Compare the estimated monthly costs of buying versus renting a comparable property in the area.</p>
-                <div class="chart-placeholder">
-                    <img src="https://via.placeholder.com/800x400?text=Buy+vs+Rent+Analysis" alt="Comparison showing estimated monthly cost breakdown for buying vs. renting" width="100%">
-                </div>
-            </div>
-        </div>
-
-        <p>Stay tuned! We're excited to roll out these enhancements soon to provide you with even more comprehensive and actionable information.</p>
+    <!-- Top ad container -->
+    <div class="ad-container">
+        <ins class="adsbygoogle"
+             style="display:block; width:100%; height:90px;"
+             data-ad-client="ca-pub-6348225556465874"
+             data-ad-slot="YOUR_AD_SLOT_ID_1"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
+
+    <!-- Main layout with side ads -->
+    <div class="page-layout">
+        <!-- Left side ad -->
+        <div class="side-ad-container">
+            <!-- Vertical ad for desktop -->
+            <ins class="adsbygoogle side-ad-vertical"
+                 style="display:inline-block; width:160px; height:600px;"
+                 data-ad-client="ca-pub-6348225556465874"
+                 data-ad-slot="YOUR_LEFT_SKYSCRAPER_SLOT_ID"></ins>
+            
+            <!-- Horizontal ad for mobile -->
+            <ins class="adsbygoogle side-ad-horizontal"
+                 style="display:none; width:100%; height:90px;"
+                 data-ad-client="ca-pub-6348225556465874"
+                 data-ad-slot="YOUR_MOBILE_SLOT_ID"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <!-- Main content area -->
+        <div class="main-content">
+            <div class="container">
+                <h1>Coming Soon: Deeper Insights!</h1>
+                <p>We're working hard behind the scenes to bring you a host of powerful new data features. Get ready to explore trends, understand local dynamics, and gain valuable insights like never before. Here's a sneak peek at what's coming:</p>
+
+                <div class="feature-section">
+                    <h2>Population & Demographics</h2>
+                    <div class="feature">
+                        <h3>Population Size & Growth</h3>
+                        <p>Track the latest population figures and see how areas are growing or shrinking over time.</p>
+                        <p class="mock-data">Example: Current Population: 150,345 | Growth (YoY): +1.8%</p>
+                        <div class="chart-placeholder">
+                            <img src="https://via.placeholder.com/800x400?text=Population+Trend+Chart" alt="Population trend over last 5 years">
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <h3>Median Age</h3>
+                        <p>Understand the age distribution of the population.</p>
+                        <p class="mock-data">Example: Median Age: 38.5 years</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Educational Attainment</h3>
+                        <p>See the percentage of the population with college degrees and detailed breakdowns of education levels.</p>
+                        <p class="mock-data">Example: Bachelor's Degree or Higher: 42%</p>
+                        <div class="chart-placeholder">
+                            <img src="https://via.placeholder.com/800x400?text=Educational+Attainment+Chart" alt="Bar chart showing distribution of educational attainment">
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <h3>Household Composition</h3>
+                        <p>Explore data on household types, average household size, and the prevalence of multigenerational households.</p>
+                        <p class="mock-data">Example: Average Household Size: 2.6 | Multigenerational Households: 5.1%</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Migration Patterns</h3>
+                        <p>Analyze domestic migration trends to see where people are moving to and from.</p>
+                        <p class="mock-data">Example: Net Domestic Migration (1 Year): +1,250 people</p>
+                    </div>
+                </div>
+
+                <div class="feature-section">
+                    <h2>Economy & Income</h2>
+                    <div class="feature">
+                        <h3>Median Household Income (MHI)</h3>
+                        <p>Access current median household income data and track its growth over the past 5 years.</p>
+                        <p class="mock-data">Example: MHI: $82,100 | 5-Year Growth: +15.5%</p>
+                        <div class="chart-placeholder">
+                            <img src="https://via.placeholder.com/800x400?text=Median+Household+Income+Trend" alt="Line chart showing MHI trend over 5 years">
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <h3>Income Inequality</h3>
+                        <p>Measure income distribution using standard indices.</p>
+                        <p class="mock-data">Example: Gini Index: 0.48</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Poverty Rate</h3>
+                        <p>View the percentage of the population living below the federal poverty line.</p>
+                        <p class="mock-data">Example: Poverty Rate: 11.2%</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Remote Work Adoption</h3>
+                        <p>See the percentage of the workforce working remotely.</p>
+                        <p class="mock-data">Example: Remote Workers: 18.5%</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Employment by Industry & Occupation</h3>
+                        <p>Understand the local job market with breakdowns by industry and occupation type, including self-employment rates.</p>
+                        <div class="chart-placeholder">
+                            <img src="https://via.placeholder.com/800x400?text=Employment+by+Industry" alt="Pie chart showing top 5 employing industries">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-section">
+                    <h2>Housing Market Trends</h2>
+                    <div class="feature">
+                        <h3>Home Value Index & Growth</h3>
+                        <p>Track typical home values and their appreciation rates month-over-month, year-over-year, and over 5 years.</p>
+                        <p class="mock-data">Example: Median Home Value: $450,000 | YoY Growth: +6.2% | 5-Year Growth: +45%</p>
+                        <div class="chart-placeholder">
+                            <img src="https://via.placeholder.com/800x400?text=Home+Value+Index+Trend" alt="Line chart showing home value index trend">
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <h3>Rental Rate Index & Growth</h3>
+                        <p>Monitor typical rental rates and their year-over-year changes.</p>
+                        <p class="mock-data">Example: Median Rent: $2,100/month | YoY Growth: +4.5%</p>
+                        <div class="chart-placeholder">
+                            <img src="https://via.placeholder.com/800x400?text=Rental+Rate+Index+Trend" alt="Line chart showing rental rate index trend">
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <h3>For-Sale Inventory Levels</h3>
+                        <p>See the current number of homes for sale and compare it to historical averages and recent changes (MoM).</p>
+                        <p class="mock-data">Example: Active Listings: 520 | Inventory vs Avg: +5% | MoM Change: +2.1%</p>
+                    </div>
+                    <div class="feature">
+                        <h3>New Listings & Price Changes</h3>
+                        <p>Track the flow of new properties hitting the market and the frequency of price reductions.</p>
+                        <p class="mock-data">Example: New Listings (Last Month): 150 | Listings with Price Cut: 15%</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Days on Market (DOM)</h3>
+                        <p>Understand how quickly homes are selling and how that compares to last year.</p>
+                        <p class="mock-data">Example: Median DOM: 28 days | YoY Change: -5 days</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Housing Units & Growth</h3>
+                        <p>View the total number of housing units and the rate of new construction (via permits and unit growth).</p>
+                        <p class="mock-data">Example: Total Housing Units: 65,000 | YoY Growth: +1.2% | New Permits (YTD): 350</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Vacancy & Homeownership Rates</h3>
+                        <p>Analyze housing occupancy, including overall vacancy rates, homeownership rates, and details on seasonal/vacant owned homes.</p>
+                        <p class="mock-data">Example: Homeownership Rate: 65% | Vacancy Rate: 4.5%</p>
+                    </div>
+                </div>
+
+                <div class="feature-section">
+                    <h2>Affordability & Costs</h2>
+                    <div class="feature">
+                        <h3>Home Price to Income Ratio</h3>
+                        <p>Compare typical home values to median household incomes to gauge local affordability relative to historical norms.</p>
+                        <p class="mock-data">Example: Value/Income Ratio: 5.5 | Over/Under Valued vs Norm: +10%</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Rent Burden</h3>
+                        <p>See typical rent costs as a percentage of median household income.</p>
+                        <p class="mock-data">Example: Rent as % of Income: 31%</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Mortgage Payments & Affordability</h3>
+                        <p>Estimate typical mortgage payments based on current rates and calculate the estimated salary needed to comfortably afford a median-priced home.</p>
+                        <p class="mock-data">Example: Est. Monthly Mortgage: $2,800 | Salary Needed: $120,000</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Property & Sales Tax Rates</h3>
+                        <p>Access local property tax rates and state/local sales tax information, including year-over-year changes.</p>
+                        <p class="mock-data">Example: Effective Property Tax Rate: 1.15% | Sales Tax: 7.25%</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Buy vs. Rent Analysis</h3>
+                        <p>Compare the estimated monthly costs of buying versus renting a comparable property in the area.</p>
+                        <div class="chart-placeholder">
+                            <img src="https://via.placeholder.com/800x400?text=Buy+vs+Rent+Analysis" alt="Comparison showing estimated monthly cost breakdown for buying vs. renting">
+                        </div>
+                    </div>
+                </div>
+
+                <p>Stay tuned! We're excited to roll out these enhancements soon to provide you with even more comprehensive and actionable information.</p>
+            </div>
+        </div>
+
+        <!-- Right side ad -->
+        <div class="side-ad-container">
+            <!-- Vertical ad for desktop -->
+            <ins class="adsbygoogle side-ad-vertical"
+                 style="display:inline-block; width:160px; height:600px;"
+                 data-ad-client="ca-pub-6348225556465874"
+                 data-ad-slot="YOUR_RIGHT_SKYSCRAPER_SLOT_ID"></ins>
+            
+            <!-- Horizontal ad for mobile -->
+            <ins class="adsbygoogle side-ad-horizontal"
+                 style="display:none; width:100%; height:90px;"
+                 data-ad-client="ca-pub-6348225556465874"
+                 data-ad-slot="YOUR_MOBILE_SLOT_ID_2"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+
+    <!-- Bottom ad container -->
+    <div class="ad-container">
+        <ins class="adsbygoogle"
+             style="display:block; width:100%; height:90px;"
+             data-ad-client="ca-pub-6348225556465874"
+             data-ad-slot="YOUR_AD_SLOT_ID_2"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
     <footer>
         &copy; 2025 PlaceTrends.com. All rights reserved.
     </footer>

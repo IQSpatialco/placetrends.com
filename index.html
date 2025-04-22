@@ -8,17 +8,14 @@
     <meta name="author" content="PlaceTrends">
     <meta property="og:title" content="PlaceTrends - Spatial Data Analysis Hub">
     <meta property="og:description" content="PlaceTrends brings together powerful datasets at the ZIP code level—making it easier to explore trends, uncover opportunities, and gain insights.">
-    <!-- Updated og:image path -->
     <meta property="og:image" content="/assets/images/logo.avif">
-    <meta property="og:url" content="https://placetrends.com"> <!-- Assuming this is your custom domain -->
+    <meta property="og:url" content="https://placetrends.com">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <title>PlaceTrends - Spatial Data Analysis Hub</title>
 
     <!-- Favicon -->
-    <!-- Updated favicon paths -->
     <link rel="icon" href="/assets/images/logo.avif" type="image/avif">
-    <!-- Fallback favicon - Make sure favicon.ico exists in /assets/images/ -->
     <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
 
     <!-- Google Analytics -->
@@ -44,7 +41,7 @@
         html, body {
             height: 100%;
             width: 100%;
-            overflow: hidden; /* Prevents main page scroll, focusing on iframe */
+            overflow: hidden;
             display: flex;
             flex-direction: column;
         }
@@ -62,7 +59,7 @@
             padding: 15px 0;
             text-align: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            flex-shrink: 0; /* Prevent header from shrinking */
+            flex-shrink: 0;
         }
 
         .logo-container {
@@ -92,35 +89,61 @@
             color: #555;
             background-color: white;
             margin-top: 5px;
-            flex-shrink: 0; /* Prevent description from shrinking */
-            max-width: 800px; /* Limit width for readability */
+            flex-shrink: 0;
+            max-width: 800px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        /* Ad containers */
+        /* Main content layout with side ads */
+        .main-container {
+            display: flex;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        /* Side ad containers */
+        .side-ad-container {
+            width: 160px; /* Standard skyscraper ad width */
+            background-color: #f9f9f9;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+            overflow-y: auto; /* Allow scrolling if needed */
+        }
+
+        /* Top and bottom ad containers */
         .ad-container {
             width: 100%;
             text-align: center;
             padding: 10px 0;
             background-color: #f9f9f9;
-            flex-shrink: 0; /* Prevent ad containers from shrinking */
-            min-height: 70px; /* Use min-height for flexibility */
+            flex-shrink: 0;
+            min-height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
+        /* Center content area */
+        .content-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
         /* Iframe container */
         .iframe-container {
-            flex-grow: 1; /* Take up all available vertical space */
+            flex-grow: 1;
             width: 100%;
-            position: relative; /* Needed for absolute positioning of iframe */
-            background-color: #f0f0f0; /* Background in case iframe fails */
-            display: flex; /* Use flex to center fallback content */
+            position: relative;
+            background-color: #f0f0f0;
+            display: flex;
             flex-direction: column;
-            justify-content: center; /* Center fallback vertically */
-            align-items: center; /* Center fallback horizontally */
+            justify-content: center;
+            align-items: center;
         }
 
         iframe {
@@ -134,7 +157,7 @@
 
         /* Fallback content */
         .iframe-fallback {
-            display: none; /* Hidden by default */
+            display: none;
             text-align: center;
             padding: 30px;
             background-color: #fff;
@@ -171,13 +194,13 @@
             color: #666;
             border-top: 1px solid #eee;
             background-color: white;
-            flex-shrink: 0; /* Prevent footer from shrinking */
+            flex-shrink: 0;
         }
 
         footer a {
             color: #3498db;
             text-decoration: none;
-            margin: 0 5px; /* Add some spacing between links */
+            margin: 0 5px;
         }
 
         footer a:hover {
@@ -185,7 +208,37 @@
         }
 
         /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .side-ad-container {
+                width: 120px; /* Smaller on medium screens */
+            }
+        }
+
         @media (max-width: 768px) {
+            /* Stack layout on smaller screens */
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .side-ad-container {
+                width: 100%;
+                height: auto;
+                min-height: 100px;
+                flex-direction: row;
+                justify-content: center;
+            }
+            
+            .side-ad-vertical {
+                display: none; /* Hide vertical ads */
+            }
+            
+            .side-ad-horizontal {
+                display: block; /* Show horizontal ads */
+                width: 100%;
+                max-width: 728px; /* Standard leaderboard width */
+                height: 90px;
+            }
+            
             header {
                 padding: 10px 0;
             }
@@ -198,25 +251,35 @@
                 font-size: 0.9rem;
                 padding: 10px 15px;
             }
-
-            .ad-container {
-                min-height: 60px; /* Adjust min-height for smaller screens */
+        }
+        
+        @media (min-width: 769px) {
+            .side-ad-vertical {
+                display: block; /* Show vertical ads on larger screens */
+                width: 160px;
+                height: 600px; /* Standard skyscraper height */
+                margin-bottom: 20px;
+            }
+            
+            .side-ad-horizontal {
+                display: none; /* Hide horizontal ads on larger screens */
             }
         }
+
         @media (max-width: 480px) {
-             h1 {
+            h1 {
                 font-size: 1.3rem;
             }
             .logo {
                 height: 35px;
             }
-             .description {
+            .description {
                 font-size: 0.85rem;
             }
-             footer {
-                font-size: 0.75rem; /* Slightly smaller font on very small screens */
+            footer {
+                font-size: 0.75rem;
             }
-             footer a {
+            footer a {
                 margin: 0 3px;
             }
         }
@@ -225,7 +288,6 @@
 <body>
     <header>
         <div class="logo-container">
-            <!-- Updated logo path -->
             <img src="/assets/images/logo.avif" alt="PlaceTrends Logo" class="logo">
             <h1>PlaceTrends</h1>
         </div>
@@ -235,12 +297,12 @@
         PlaceTrends brings together powerful datasets at the ZIP code level—making it easier to explore trends, uncover opportunities, and gain insights for homebuyers, real estate investors, and economic analysts.
     </div>
 
-    <!-- Top ad container - REMEMBER TO REPLACE YOUR_AD_SLOT_ID_1 -->
+    <!-- Top ad container -->
     <div class="ad-container">
         <ins class="adsbygoogle"
-             style="display:block; width:100%; height:90px;" <!-- Example dimensions, adjust as needed -->
+             style="display:block; width:100%; height:90px;"
              data-ad-client="ca-pub-6348225556465874"
-             data-ad-slot="YOUR_AD_SLOT_ID_1" <!-- REPLACE THIS -->
+             data-ad-slot="YOUR_AD_SLOT_ID_1"
              data-ad-format="auto"
              data-full-width-responsive="true"></ins>
         <script>
@@ -248,34 +310,84 @@
         </script>
     </div>
 
-    <!-- App iframe with fallback -->
-    <div class="iframe-container">
-        <iframe
-            id="placetrends-app"
-            title="PlaceTrends Application - Spatial Data Analysis Tool"
-            src="https://place-trends-rmkenv.replit.app/"
-            allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-            sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts allow-top-navigation"
-            referrerpolicy="no-referrer"
-            loading="eager"
-            importance="high"
-            onload="this.style.opacity=1; document.getElementById('iframe-fallback').style.display='none';"
-            onerror="this.style.opacity=0; document.getElementById('iframe-fallback').style.display='block';" /* Show fallback on error */
-            style="opacity:0;transition:opacity 0.5s ease;"> /* Start hidden, fade in */
-        </iframe>
-        <!-- Fallback content shown if iframe fails to load -->
-        <div id="iframe-fallback" class="iframe-fallback">
-            <p>The PlaceTrends application could not be loaded directly.</p>
-            <a href="https://place-trends-rmkenv.replit.app/" target="_blank" rel="noopener noreferrer">Open PlaceTrends App in New Tab</a>
+    <!-- Main container with side ads -->
+    <div class="main-container">
+        <!-- Left side ad -->
+        <div class="side-ad-container">
+            <!-- Vertical ad for desktop -->
+            <ins class="adsbygoogle side-ad-vertical"
+                 style="display:inline-block; width:160px; height:600px;"
+                 data-ad-client="ca-pub-6348225556465874"
+                 data-ad-slot="YOUR_LEFT_SKYSCRAPER_SLOT_ID"></ins>
+            
+            <!-- Horizontal ad for mobile -->
+            <ins class="adsbygoogle side-ad-horizontal"
+                 style="display:none; width:100%; height:90px;"
+                 data-ad-client="ca-pub-6348225556465874"
+                 data-ad-slot="YOUR_MOBILE_SLOT_ID"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <!-- Center content area -->
+        <div class="content-area">
+            <!-- App iframe with fallback -->
+            <div class="iframe-container">
+                <iframe
+                    id="placetrends-app"
+                    title="PlaceTrends Application - Spatial Data Analysis Tool"
+                    src="https://place-trends-rmkenv.replit.app/"
+                    allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+                    sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts allow-top-navigation"
+                    referrerpolicy="no-referrer"
+                    loading="eager"
+                    importance="high"
+                    onload="this.style.opacity=1; document.getElementById('iframe-fallback').style.display='none';"
+                    onerror="this.style.opacity=0; document.getElementById('iframe-fallback').style.display='block';"
+                    style="opacity:0;transition:opacity 0.5s ease;">
+                </iframe>
+                <!-- Fallback content shown if iframe fails to load -->
+                <div id="iframe-fallback" class="iframe-fallback">
+                    <p>The PlaceTrends application could not be loaded directly.</p>
+                    <a href="https://place-trends-rmkenv.replit.app/" target="_blank" rel="noopener noreferrer">Open PlaceTrends App in New Tab</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right side ad -->
+        <div class="side-ad-container">
+            <!-- Vertical ad for desktop -->
+            <ins class="adsbygoogle side-ad-vertical"
+                 style="display:inline-block; width:160px; height:600px;"
+                 data-ad-client="ca-pub-6348225556465874"
+                 data-ad-slot="YOUR_RIGHT_SKYSCRAPER_SLOT_ID"></ins>
+            
+            <!-- Horizontal ad for mobile -->
+            <ins class="adsbygoogle side-ad-horizontal"
+                 style="display:none; width:100%; height:90px;"
+                 data-ad-client="ca-pub-6348225556465874"
+                 data-ad-slot="YOUR_MOBILE_SLOT_ID_2"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
         </div>
     </div>
 
-    <!-- Bottom ad container - REMEMBER TO REPLACE YOUR_AD_SLOT_ID_2 -->
+    <!-- Bottom ad container -->
     <div class="ad-container">
         <ins class="adsbygoogle"
-             style="display:block; width:100%; height:90px;" <!-- Example dimensions, adjust as needed -->
+             style="display:block; width:100%; height:90px;"
              data-ad-client="ca-pub-6348225556465874"
-             data-ad-slot="YOUR_AD_SLOT_ID_2" <!-- REPLACE THIS -->
+             data-ad-slot="YOUR_AD_SLOT_ID_2"
              data-ad-format="auto"
              data-full-width-responsive="true"></ins>
         <script>
@@ -285,7 +397,6 @@
 
     <footer>
         &copy; 2025 PlaceTrends. All rights reserved. |
-        <!-- Added link to Coming Soon page -->
         <a href="/soon/">Coming Soon</a> |
         <a href="/privacy/">Privacy Policy</a>
     </footer>
@@ -296,7 +407,7 @@
         "@context": "https://schema.org",
         "@type": "WebApplication",
         "name": "PlaceTrends",
-        "url": "https://placetrends.com", // Assuming this is your custom domain
+        "url": "https://placetrends.com",
         "description": "PlaceTrends brings together powerful datasets at the ZIP code level—making it easier to explore trends, uncover opportunities, and gain insights.",
         "applicationCategory": "DataVisualization",
         "operatingSystem": "All",
@@ -312,6 +423,5 @@
         }
     }
     </script>
-
 </body>
 </html>

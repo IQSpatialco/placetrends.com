@@ -9,12 +9,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0  # This ensures you have the full history
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -32,9 +34,11 @@ jobs:
         run: python scripts/glossary_generator.py
 
       - name: Commit and push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
         run: |
-          git config --global user.name "GitHub Actions Bot"
+          git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add .
           git diff --quiet && git diff --staged --quiet || git commit -m "Update glossary pages [skip ci]"
-          git push
+          git push https://${{ secrets.REPO_ACCESS_TOKEN }}@github.com/IQSpatialco/placetrends.com.git

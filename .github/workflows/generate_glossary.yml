@@ -1,55 +1,399 @@
-name: Generate and Deploy Glossary
+"""
+glossary_generator.py
+A script to automatically generate SEO-optimized glossary pages for placetrends.com
+focusing on demographics, business, real estate, and online SEO
+"""
 
-on:
-  schedule:
-    - cron: '0 0 * * *'  # Runs daily at midnight UTC
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+import google.generativeai as genai
+import pandas as pd
+import os
+from time import sleep
+from datetime import datetime
+import re
+import yaml
+from pathlib import Path
+from bs4 import BeautifulSoup
+import html
 
-jobs:
-  generate:
-    runs-on: ubuntu-latest
+class SEOOptimizer:
+    """Helper class for SEO optimization"""
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    @staticmethod
+    def create_seo_slug(term):
+        """Create SEO-friendly slug from term"""
+        slug = term.lower()
+        slug = re.sub(r'[^a-z0-9]+', '-', slug)
+        slug = slug.strip('-')
+        slug = slug[:60]
+        return slug
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
+    @staticmethod
+    def generate_schema_markup(content):
+        """Generate Schema.org JSON-LD markup"""
+        schema = {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": content['title'],
+            "description": content['meta_description'],
+            "keywords": content['keywords'],
+            "datePublished": datetime.now().strftime('%Y-%m-%d'),
+            "dateModified": datetime.now().strftime('%Y-%m-%d'),
+            "author": {
+                "@type": "Organization",
+                "name": "PlaceTrends"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "PlaceTrends",
+                "url": "https://placetrends.com"
+            }
+        }
+        return schema
 
-      - name: List directory structure
-        run: |
-          ls -la
-          pwd
+    @staticmethod
+    def generate_meta_tags(content):
+        """Generate HTML meta tags for SEO"""
+        meta_tags = f"""
+        <!-- Primary Meta Tags -->
+        <meta name="title" content="{html.escape(content['title'])}">
+        <meta name="description" content="{html.escape(content['meta_description'])}">
+        <meta name="keywords" content="{html.escape(', '.join(content['keywords']))}">
 
-      - name: Create required directories
-        run: |
-          mkdir -p glossary
-          mkdir -p data
-          mkdir -p scripts
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="{html.escape(content['title'])}">
+        <meta property="og:description" content="{html.escape(content['meta_description'])}">
+        <meta property="og:url" content="https://placetrends.com/glossary/{content['slug']}">
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:title" content="{html.escape(content['title'])}">
+        <meta property="twitter:description" content="{html.escape(content['meta_description'])}">
+        """
+        return meta_tags
 
-      - name: Set GEMINI_API_KEY environment variable
-        run: echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> $GITHUB_ENV
+class GlossaryGenerator:
+    def __init__(self, api_key):
+        # Configure Gemini API
+        genai.configure(api_key=api_key)
+        self.model = genai.GenerativeModel('gemini-pro')
+        self.seo_optimizer = SEOOptimizer()
 
-      - name: Run glossary generator
-        run: python scripts/glossary_generator.py
+        # Ensure directories exist
+        self.glossary_dir = Path("glossary")
+        self.glossary_dir.mkdir(exist_ok=True)
+        self.data_dir = Path("data")
+        self.data_dir.mkdir(exist_ok=True)
 
-      - name: Configure Git
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
+    def generate_seo_elements(self, term):
+        """Generate SEO-optimized elements for the content"""
+        try:
+            seo_prompt = f"""
+            Generate SEO elements for the term '{term}':
+            1. Primary keyword (the main term)
+            2. 5-7 related secondary keywords
+            3. 3-5 LSI (Latent Semantic Indexing) keywords
+            4. A list of internal linking opportunities
+            5. Suggested external reference sources
+            Format as YAML with clear sections.
+            """
+            seo_response = self.model.generate_content(seo_prompt)
+            seo_elements = yaml.safe_load(seo_response.text)
+            return seo_elements
+        except Exception as e:
+            print(f"Error generating SEO elements for {term}: {e}")
+            return None
 
-      - name: Commit and push changes
-        run: |
-          git add glossary/ data/
-          git commit -m "Generated new glossary pages [skip ci]" || echo "No changes to commit"
-          git push origin main || echo "No changes to push"
+    def generate_content(self, term):
+        """Generate enhanced SEO-optimized content for a glossary term"""
+        try:
+            # Generate SEO elements first
+            seo_elements = self.generate_seo_elements(term)
+            if not seo_elements:
+                return None
+
+            # Generate definition with keyword optimization
+            definition_prompt = f"""
+            Provide a clear, concise definition of '{term}' in the context of demographics,
+            business strategy, real estate, and online marketing/SEO.
+            Naturally incorporate these keywords: {', '.join(seo_elements['secondary_keywords'][:2])}
+            Format as a simple definition of 50-75 words.
+            Focus on practical business applications and value.
+            """
+            definition_response = self.model.generate_content(definition_prompt)
+            definition = definition_response.text.strip()
+
+            # Generate detailed article with SEO optimization
+            article_prompt = f"""
+            Write a detailed 800-1000 word article about '{term}' that includes:
+            1. Natural integration of these keywords: {', '.join(seo_elements['secondary_keywords'])}
+            2. Use these LSI keywords where appropriate: {', '.join(seo_elements['lsi_keywords'])}
+            3. Include internal linking opportunities to: {', '.join(seo_elements['internal_linking'])}
+            4. Cite these authoritative sources: {', '.join(seo_elements['external_sources'])}
+
+            Structure the article with:
+            - Introduction (with keyword-rich first paragraph)
+            - Why this concept matters for business and ROI
+            - Implementation strategies and best practices
+            - Real-world examples and case studies
+            - Common challenges and solutions
+            - Future trends and implications
+            - Actionable tips and next steps
+            - Conclusion with call-to-action
+
+            Format in markdown with H3 headers (###).
+            Optimize for featured snippets and rich results.
+            Include relevant statistics and data points.
+            """
+            article_response = self.model.generate_content(article_prompt)
+            article = article_response.text.strip()
+
+            # Generate enhanced meta content
+            meta_prompt = f"""
+            Generate SEO metadata incorporating '{term}' and these keywords: {', '.join(seo_elements['secondary_keywords'][:2])}
+            1. SEO title (50-60 characters)
+            2. Meta description (150-160 characters)
+            3. Social media title (65 characters)
+            4. Social media description (200 characters)
+            Focus on click-through rate optimization and value proposition.
+            """
+            meta_response = self.model.generate_content(meta_prompt)
+            meta_content = yaml.safe_load(meta_response.text)
+
+            # Create the content dictionary with all SEO elements
+            content = {
+                "term": term,
+                "slug": self.seo_optimizer.create_seo_slug(term),
+                "definition": definition,
+                "article": article,
+                "title": meta_content['seo_title'],
+                "meta_description": meta_content['meta_description'],
+                "social_title": meta_content['social_title'],
+                "social_description": meta_content['social_description'],
+                "keywords": seo_elements['secondary_keywords'] + seo_elements['lsi_keywords'],
+                "primary_keyword": seo_elements['primary_keyword'],
+                "schema_markup": self.seo_optimizer.generate_schema_markup({
+                    'title': meta_content['seo_title'],
+                    'meta_description': meta_content['meta_description'],
+                    'keywords': seo_elements['secondary_keywords']
+                }),
+                "meta_tags": self.seo_optimizer.generate_meta_tags({
+                    'title': meta_content['seo_title'],
+                    'meta_description': meta_content['meta_description'],
+                    'keywords': seo_elements['secondary_keywords'],
+                    'slug': self.seo_optimizer.create_seo_slug(term)
+                })
+            }
+
+            return content
+
+        except Exception as e:
+            print(f"Error generating content for {term}: {e}")
+            return None
+
+    def save_html(self, content):
+        """Save content as an SEO-optimized HTML file"""
+        filepath = self.glossary_dir / f"{content['slug']}.html"
+
+        html_content = f"""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>{html.escape(content['title'])}</title>
+            <meta name="description" content="{html.escape(content['meta_description'])}">
+            <meta name="keywords" content="{html.escape(', '.join(content['keywords']))}">
+            {content['meta_tags']}
+            <script type="application/ld+json">
+                {yaml.dump(content['schema_markup'])}
+            </script>
+            <link rel="stylesheet" href="../assets/css/style.css"> <!-- Adjust path if needed -->
+        </head>
+        <body>
+            <header>
+                <!-- Your header content -->
+                <div class="logo-container">
+                    <img src="../assets/images/logo.avif" alt="PlaceTrends Logo" class="logo">
+                    <h1>PlaceTrends Glossary</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="../home.html">Home</a></li>  <!-- Link to your main page -->
+                        <li><a href="../index.html">Glossary</a></li>
+                        <li><a href="../soon/">Coming Soon</a></li>
+                    </ul>
+                </nav>
+            </header>
+
+            <div class="main-container">
+                <div class="content-area">
+                    <section id="glossary-content">
+                        <h2>{html.escape(content['title'])}</h2>
+                        <h3>Definition</h3>
+                        <p>{content['definition']}</p>
+                        <h3>Article</h3>
+                        {content['article']}
+                    </section>
+                </div>
+            </div>
+
+            <footer>
+                <!-- Your footer content -->
+            </footer>
+        </body>
+        </html>
+        """
+
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(html_content)
+
+    def generate_glossary_index(self, terms):
+        """Generate the glossary/index.html file with links to all terms"""
+        index_filepath = self.glossary_dir / "index.html"
+        html_links = ""
+        for term in terms:
+            slug = self.seo_optimizer.create_seo_slug(term)
+            html_links += f'<li><a href="{slug}.html">{html.escape(term)}</a></li>\n'
+
+        index_content = f"""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>PlaceTrends Glossary</title>
+            <link rel="stylesheet" href="../assets/css/style.css"> <!-- Adjust path if needed -->
+        </head>
+        <body>
+            <header>
+                <!-- Your header content -->
+                <div class="logo-container">
+                    <img src="../assets/images/logo.avif" alt="PlaceTrends Logo" class="logo">
+                    <h1>PlaceTrends Glossary</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="../home.html">Home</a></li>  <!-- Link to your main page -->
+                        <li><a href="#">Glossary</a></li>
+                        <li><a href="../soon/">Coming Soon</a></li>
+                    </ul>
+                </nav>
+            </header>
+
+            <div class="main-container">
+                <div class="content-area">
+                    <section id="glossary-content">
+                        <h2>Glossary</h2>
+                        <ul>
+                            {html_links}
+                        </ul>
+                    </section>
+                </div>
+            </div>
+
+            <footer>
+                <!-- Your footer content -->
+            </footer>
+        </body>
+        </html>
+        """
+
+        with open(index_filepath, 'w', encoding='utf-8') as f:
+            f.write(index_content)
+
+    def generate_glossary(self, terms):
+        """Generate SEO-optimized glossary content for all terms"""
+        glossary_data = []
+
+        for term in terms:
+            print(f"Generating SEO-optimized content for: {term}")
+            content = self.generate_content(term)
+            if content:
+                glossary_data.append(content)
+                self.save_html(content)
+                sleep(2)  # Rate limiting
+
+        # Generate the glossary index page
+        self.generate_glossary_index(terms)
+
+        # Save to CSV with SEO metrics
+        if glossary_data:
+            df = pd.DataFrame(glossary_data)
+            csv_path = self.data_dir / f"glossary_data_{datetime.now().strftime('%Y%m%d')}.csv"
+            df.to_csv(csv_path, index=False)
+
+        return len(glossary_data)
+
+def main():
+    # Define terms list
+    terms = [
+        "Demographic Segmentation for Business Strategy",
+        "Age-Based Marketing in Real Estate",
+        "Gender-Specific Product Targeting Online",
+        "Income-Based Real Estate Investment Analysis",
+        "Educational Attainment and Business Location",
+        "Cultural Demographics in International SEO",
+        "Location-Based Business Demographics",
+        "Urban vs. Rural Market Segmentation",
+        "Multilingual SEO for Global Business",
+        "Ethnicity and Targeted Advertising",
+        "Accessibility for Diverse Customer Bases",
+        "Generational Trends in Consumer Behavior",
+        "Millennial Homebuyer SEO Strategies",
+        "Gen Z Online Shopping Preferences",
+        "Baby Boomer Retirement Community Marketing",
+        "Family Status and Real Estate Choices",
+        "Marital Status and Financial Planning SEO",
+        "Parental Status and Family-Friendly Businesses",
+        "Occupation-Based Financial Services",
+        "Industry-Specific Demographic Analysis",
+        "Psychographic Segmentation for Brand Messaging",
+        "Behavioral Targeting in Online Advertising",
+        "Interest-Based Content Marketing",
+        "Lifestyle Segmentation for Real Estate",
+        "Customer Persona Development for SEO",
+        "Audience Research for Business Expansion",
+        "Audience Intent in Real Estate SEO",
+        "User Journey Mapping for Online Sales",
+        "Localized Content for Demographic Groups",
+        "Regional Language Marketing",
+        "Voice Search Optimization for Local Businesses",
+        "Mobile SEO for Different Age Groups",
+        "Device Usage Demographics in E-commerce",
+        "Social Media Demographics for Lead Generation",
+        "Video Marketing for Targeted Demographics",
+        "Visual Content Preferences by Age Group",
+        "Reading Level Optimization for Online Content",
+        "Content Accessibility for Diverse Audiences",
+        "Inclusive Language in Business Communication",
+        "Multicultural Marketing for Real Estate",
+        "International SEO for Global Real Estate",
+        "B2B vs. B2C Demographic Targeting",
+        "Niche Market Business Strategies",
+        "Micro-Moment Targeting for Mobile Users",
+        "Long-Tail Keywords for Demographic Niches",
+        "Seasonal Marketing for Demographic Trends",
+        "Event-Based Real Estate Promotions",
+        "Geo-Targeted Landing Pages for Local SEO",
+        "Hyperlocal Marketing for Small Businesses",
+        "Community-Based Real Estate Development"
+    ]
+
+    # Initialize generator with your API key
+    api_key = os.getenv('GEMINI_API_KEY')
+    if not api_key:
+        raise ValueError("Please set GEMINI_API_KEY environment variable")
+
+    generator = GlossaryGenerator(api_key)
+
+    # Generate SEO-optimized content
+    num_generated = generator.generate_glossary(terms)
+
+    print(f"\nSEO-Optimized Content Generation Complete!")
+    print(f"Generated {num_generated} glossary entries with full SEO optimization")
+    print(f"Files saved in {generator.glossary_dir}")
+    print(f"Data backup saved in {generator.data_dir}")
+
+if __name__ == "__main__":
+    main()

@@ -5,8 +5,8 @@ on:
     - cron: '0 0 * * *'  # Runs daily at midnight UTC
   push:
     branches:
-      - main  # Or your main branch name
-  workflow_dispatch:  # Allows manual triggering
+      - main
+  workflow_dispatch:
 
 jobs:
   generate:
@@ -21,8 +21,21 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: List directory structure
+        run: |
+          ls -la
+          pwd
+
+      - name: Create required directories
+        run: |
+          mkdir -p glossary
+          mkdir -p data
+          mkdir -p scripts
+
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Set GEMINI_API_KEY environment variable
         run: echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> $GITHUB_ENV
@@ -38,5 +51,5 @@ jobs:
       - name: Commit and push changes
         run: |
           git add glossary/ data/
-          git commit -m "Generated new glossary pages" || echo "No changes to commit"
+          git commit -m "Generated new glossary pages [skip ci]" || echo "No changes to commit"
           git push origin main || echo "No changes to push"

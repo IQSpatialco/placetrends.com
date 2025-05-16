@@ -2,3 +2,4 @@ google-generativeai
 pandas
 pyyaml
 python-dotenv
+beautifulsoup4

@@ -2,11 +2,11 @@ import google.generativeai as genai
 import os
 from datetime import datetime
 import re
-import yaml
 from pathlib import Path
 import html
 import logging
 import sys
+import json  # Use json instead of yaml
 
 # Set up logging
 logging.basicConfig(

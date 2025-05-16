@@ -1,70 +1,111 @@
-#-----------------------------------------------------------------------------#
-# General                                                                     #
-#-----------------------------------------------------------------------------#
-
-# Operating System Files
-.DS_Store
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-*~
-.AppleDouble
-.LSOverride
-.directory
-
-# IDE/Editor specific files
-.vscode/
-.idea/
-*.sublime-workspace
-*.swp
-*.swo
-
-# Log files
-*.log
-logs/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-
-# Runtime data
-pids/
-*.pid
-*.seed
-*.pid.lock
-
-# Temporary files
-*.tmp
-*.temp
-
-#-----------------------------------------------------------------------------#
-# Web Development Specific (Good practice even if not used yet)               #
-#-----------------------------------------------------------------------------#
-
-# Dependency directories (Node, Bower, etc.)
-node_modules/
-bower_components/
-jspm_packages/
-
-# Build output directories (Common names)
-dist/
-build/
-public/
-out/
-.next/
-.nuxt/
-.svelte-kit/
-
-# Environment variables (NEVER commit secrets!)
+# Environment variables and secrets
 .env
 .env.*
 !.env.example
-!.env.sample
 
-# Sass cache files
-.sass-cache/
-.node-sass/
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.python-version
+venv/
+ENV/
+env/
+.venv
+.env.local
 
-#-----------------------------------------------------------------------------#
-# Optional - Add project-specific files below if needed                       #
-#-----------------------------------------------------------------------------#
+# Data and logs
+*.log
+logs/
+data/*.csv
+*.sqlite
+*.db
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-workspace
+*.sublime-project
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Test coverage
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Node (in case you have any frontend components)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Optional: Comment out if you want to version control these
+# Generated content
+# glossary/*.md
+# data/*.csv

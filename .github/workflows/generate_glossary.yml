@@ -1,9 +1,3 @@
-"""
-glossary_generator.py
-A script to automatically generate SEO-optimized glossary pages for placetrends.com
-focusing on demographics, business, real estate, and online SEO
-"""
-
 import google.generativeai as genai
 import pandas as pd
 import os

@@ -12,23 +12,18 @@ from datetime import datetime
 import re
 import yaml
 from pathlib import Path
-from urllib.parse import quote
 from bs4 import BeautifulSoup
 import html
 
 class SEOOptimizer:
     """Helper class for SEO optimization"""
-    
+
     @staticmethod
     def create_seo_slug(term):
         """Create SEO-friendly slug from term"""
-        # Convert to lowercase and remove special characters
         slug = term.lower()
-        # Replace special characters with hyphens
         slug = re.sub(r'[^a-z0-9]+', '-', slug)
-        # Remove leading/trailing hyphens
         slug = slug.strip('-')
-        # Ensure slug is not too long (max 60 chars)
         slug = slug[:60]
         return slug
 
@@ -46,6 +41,11 @@ class SEOOptimizer:
             "author": {
                 "@type": "Organization",
                 "name": "PlaceTrends"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "PlaceTrends",
+                "url": "https://placetrends.com"
             }
         }
         return schema
@@ -109,7 +109,9 @@ class GlossaryGenerator:
         try:
             # Generate SEO elements first
             seo_elements = self.generate_seo_elements(term)
-            
+            if not seo_elements:
+                return None
+
             # Generate definition with keyword optimization
             definition_prompt = f"""
             Provide a clear, concise definition of '{term}' in the context of demographics,
@@ -244,16 +246,67 @@ class GlossaryGenerator:
                 sleep(2)  # Rate limiting
 
         # Save to CSV with SEO metrics
-        df = pd.DataFrame(glossary_data)
-        csv_path = self.data_dir / f"glossary_data_{datetime.now().strftime('%Y%m%d')}.csv"
-        df.to_csv(csv_path, index=False)
+        if glossary_data:
+            df = pd.DataFrame(glossary_data)
+            csv_path = self.data_dir / f"glossary_data_{datetime.now().strftime('%Y%m%d')}.csv"
+            df.to_csv(csv_path, index=False)
 
         return len(glossary_data)
 
-# [Previous terms list remains the same]
-
 def main():
-    # [Previous terms list remains the same]
+    # Define terms list
+    terms = [
+        "Demographic Segmentation for Business Strategy",
+        "Age-Based Marketing in Real Estate",
+        "Gender-Specific Product Targeting Online",
+        "Income-Based Real Estate Investment Analysis",
+        "Educational Attainment and Business Location",
+        "Cultural Demographics in International SEO",
+        "Location-Based Business Demographics",
+        "Urban vs. Rural Market Segmentation",
+        "Multilingual SEO for Global Business",
+        "Ethnicity and Targeted Advertising",
+        "Accessibility for Diverse Customer Bases",
+        "Generational Trends in Consumer Behavior",
+        "Millennial Homebuyer SEO Strategies",
+        "Gen Z Online Shopping Preferences",
+        "Baby Boomer Retirement Community Marketing",
+        "Family Status and Real Estate Choices",
+        "Marital Status and Financial Planning SEO",
+        "Parental Status and Family-Friendly Businesses",
+        "Occupation-Based Financial Services",
+        "Industry-Specific Demographic Analysis",
+        "Psychographic Segmentation for Brand Messaging",
+        "Behavioral Targeting in Online Advertising",
+        "Interest-Based Content Marketing",
+        "Lifestyle Segmentation for Real Estate",
+        "Customer Persona Development for SEO",
+        "Audience Research for Business Expansion",
+        "Audience Intent in Real Estate SEO",
+        "User Journey Mapping for Online Sales",
+        "Localized Content for Demographic Groups",
+        "Regional Language Marketing",
+        "Voice Search Optimization for Local Businesses",
+        "Mobile SEO for Different Age Groups",
+        "Device Usage Demographics in E-commerce",
+        "Social Media Demographics for Lead Generation",
+        "Video Marketing for Targeted Demographics",
+        "Visual Content Preferences by Age Group",
+        "Reading Level Optimization for Online Content",
+        "Content Accessibility for Diverse Audiences",
+        "Inclusive Language in Business Communication",
+        "Multicultural Marketing for Real Estate",
+        "International SEO for Global Real Estate",
+        "B2B vs. B2C Demographic Targeting",
+        "Niche Market Business Strategies",
+        "Micro-Moment Targeting for Mobile Users",
+        "Long-Tail Keywords for Demographic Niches",
+        "Seasonal Marketing for Demographic Trends",
+        "Event-Based Real Estate Promotions",
+        "Geo-Targeted Landing Pages for Local SEO",
+        "Hyperlocal Marketing for Small Businesses",
+        "Community-Based Real Estate Development"
+    ]
 
     # Initialize generator with your API key
     api_key = os.getenv('GEMINI_API_KEY')

@@ -2,11 +2,10 @@ import google.generativeai as genai
 import os
 from datetime import datetime
 import re
-from pathlib import Path
-import html
 import logging
 import sys
-import json  # Use json instead of yaml
+from pathlib import Path
+import html
 
 # Set up logging
 logging.basicConfig(
@@ -73,50 +72,48 @@ class GlossaryGenerator:
             filepath = self.glossary_dir / f"{content['slug']}.html"
             logging.info(f"Saving HTML file to: {filepath}")
 
-            html_content = f"""
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>{html.escape(content['title'])}</title>
-                <meta name="description" content="{html.escape(content['meta_description'])}">
-                <link rel="stylesheet" href="../assets/css/style.css">
-            </head>
-            <body>
-                <header>
-                    <div class="logo-container">
-                        <img src="../assets/images/logo.avif" alt="PlaceTrends Logo" class="logo">
-                        <h1>PlaceTrends Glossary</h1>
-                    </div>
-                    <nav>
-                        <ul>
-                            <li><a href="../home.html">Home</a></li>
-                            <li><a href="../index.html">Glossary</a></li>
-                            <li><a href="../soon/">Coming Soon</a></li>
-                        </ul>
-                    </nav>
-                </header>
+            html_content = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{html.escape(content['title'])}</title>
+    <meta name="description" content="{html.escape(content['meta_description'])}">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../assets/images/logo.avif" alt="PlaceTrends Logo" class="logo">
+            <h1>PlaceTrends Glossary</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="index.html">Glossary</a></li>
+                <li><a href="../soon/">Coming Soon</a></li>
+            </ul>
+        </nav>
+    </header>
 
-                <div class="main-container">
-                    <div class="content-area">
-                        <section id="glossary-content">
-                            <h2>{html.escape(content['term'])}</h2>
-                            <h3>Definition</h3>
-                            <p>{content['definition']}</p>
-                            <h3>Article</h3>
-                            {content['article']}
-                            <p><a href="index.html">Back to Glossary</a></p>
-                        </section>
-                    </div>
-                </div>
+    <div class="main-container">
+        <div class="content-area">
+            <section id="glossary-content">
+                <h2>{html.escape(content['term'])}</h2>
+                <h3>Definition</h3>
+                <p>{content['definition']}</p>
+                <h3>Article</h3>
+                {content['article']}
+                <p><a href="index.html">Back to Glossary</a></p>
+            </section>
+        </div>
+    </div>
 
-                <footer>
-                    <p>&copy; {datetime.now().year} PlaceTrends</p>
-                </footer>
-            </body>
-            </html>
-            """
+    <footer>
+        <p>&copy; {datetime.now().year} PlaceTrends</p>
+    </footer>
+</body>
+</html>"""
 
             with open(filepath, 'w', encoding='utf-8') as f:
                 f.write(html_content)
@@ -140,47 +137,47 @@ class GlossaryGenerator:
                 slug = self.create_seo_slug(term)
                 html_links += f'<li><a href="{slug}.html">{html.escape(term)}</a></li>\n'
 
-            index_content = f"""
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>PlaceTrends Glossary</title>
-                <link rel="stylesheet" href="../assets/css/style.css">
-            </head>
-            <body>
-                <header>
-                    <div class="logo-container">
-                        <img src="../assets/images/logo.avif" alt="PlaceTrends Logo" class="logo">
-                        <h1>PlaceTrends Glossary</h1>
-                    </div>
-                    <nav>
-                        <ul>
-                            <li><a href="../home.html">Home</a></li>
-                            <li><a href="#">Glossary</a></li>
-                            <li><a href="../soon/">Coming Soon</a></li>
-                        </ul>
-                    </nav>
-                </header>
+            index_content = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlaceTrends Glossary</title>
+    <meta name="description" content="Comprehensive glossary of demographic terms for business, real estate, and SEO">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../assets/images/logo.avif" alt="PlaceTrends Logo" class="logo">
+            <h1>PlaceTrends Glossary</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="#">Glossary</a></li>
+                <li><a href="../soon/">Coming Soon</a></li>
+            </ul>
+        </nav>
+    </header>
 
-                <div class="main-container">
-                    <div class="content-area">
-                        <section id="glossary-content">
-                            <h2>Glossary of Terms</h2>
-                            <ul>
-                                {html_links}
-                            </ul>
-                        </section>
-                    </div>
-                </div>
+    <div class="main-container">
+        <div class="content-area">
+            <section id="glossary-content">
+                <h2>Glossary of Terms</h2>
+                <p>Welcome to the PlaceTrends Glossary, your comprehensive resource for demographic terms and concepts relevant to business strategy, real estate, and online marketing.</p>
+                <ul>
+                    {html_links}
+                </ul>
+            </section>
+        </div>
+    </div>
 
-                <footer>
-                    <p>&copy; {datetime.now().year} PlaceTrends</p>
-                </footer>
-            </body>
-            </html>
-            """
+    <footer>
+        <p>&copy; {datetime.now().year} PlaceTrends. All rights reserved.</p>
+    </footer>
+</body>
+</html>"""
 
             with open(index_filepath, 'w', encoding='utf-8') as f:
                 f.write(index_content)
@@ -225,7 +222,10 @@ def main():
     terms = [
         "Demographic Segmentation",
         "Age-Based Marketing",
-        "Income Demographics"
+        "Income Demographics",
+        "Educational Attainment Demographics",
+        "Cultural Demographics",
+        "Location-Based Demographics"
     ]
 
     # Initialize generator with API key

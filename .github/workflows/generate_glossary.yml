@@ -28,7 +28,7 @@ jobs:
         run: echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> $GITHUB_ENV
 
       - name: Run glossary generator
-        run: python glossary_generator.py
+        run: python scripts/glossary_generator.py
 
       - name: Configure Git
         run: |

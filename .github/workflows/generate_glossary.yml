@@ -15,7 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
           fetch-depth: 0
 
       - name: Set up Python
@@ -38,8 +38,8 @@ jobs:
           echo "Generated files in glossary directory:"
           ls -la glossary/
 
-      - name: Commit and push changes
-        uses: stefanzweifel/git-auto-commit-action@v4
+      - name: Push changes
+        uses: ad-m/github-push-action@master
         with:
-          commit_message: "Update glossary pages [skip ci]"
-          file_pattern: "glossary/* data/*"
+          github_token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          branch: main

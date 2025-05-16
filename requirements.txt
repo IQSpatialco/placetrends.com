@@ -1,5 +1,2 @@
-google-generativeai
-pandas
-pyyaml
-python-dotenv
-beautifulsoup4
+google-generativeai>=0.3.0
+pyyaml>=6.0

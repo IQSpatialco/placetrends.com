@@ -1,254 +1,153 @@
-import google.generativeai as genai
 import os
-from datetime import datetime
-import re
 import logging
-import sys
+import google.generativeai as genai
 from pathlib import Path
-import html
 
-# Set up logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[logging.StreamHandler(sys.stdout)]
-)
+# Set up detailed logging
+logging.basicConfig(level=logging.DEBUG, 
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
-# Get the repository root directory
-REPO_ROOT = Path(os.environ.get('GITHUB_WORKSPACE', os.getcwd()))
-# Define glossary directory relative to repo root
-GLOSSARY_DIR = REPO_ROOT / "glossary"
+# Constants
+GLOSSARY_DIR = os.path.join(os.getcwd(), "glossary")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+
+logger.debug(f"Script started, working directory: {os.getcwd()}")
+logger.debug(f"GEMINI_API_KEY present: {'Yes' if GEMINI_API_KEY else 'No'}")
+logger.debug(f"GLOSSARY_DIR path: {GLOSSARY_DIR}")
+logger.debug(f"GLOSSARY_DIR exists: {os.path.exists(GLOSSARY_DIR)}")
+
+# Create glossary directory if it doesn't exist
+os.makedirs(GLOSSARY_DIR, exist_ok=True)
+logger.debug(f"After creation, GLOSSARY_DIR exists: {os.path.exists(GLOSSARY_DIR)}")
 
 class GlossaryGenerator:
-    def __init__(self, api_key):
-        # Configure Gemini API
-        logging.info("Initializing GlossaryGenerator")
-        genai.configure(api_key=api_key)
+    def __init__(self):
+        if not GEMINI_API_KEY:
+            logger.error("GEMINI_API_KEY environment variable is not set")
+            raise ValueError("GEMINI_API_KEY environment variable is not set")
+        
+        # Configure the Gemini API
+        genai.configure(api_key=GEMINI_API_KEY)
         self.model = genai.GenerativeModel('gemini-pro')
+        logger.debug("Gemini API configured successfully")
+        
+        # List of terms to generate glossary pages for
+        self.terms = [
+            "Location Intelligence",
+            "Geospatial Analysis",
+            "Spatial Data",
+            "Geographic Information System (GIS)",
+            "Geocoding",
+            "Reverse Geocoding",
+            "Point of Interest (POI)",
+            "Trade Area",
+            "Catchment Area",
+            "Isochrone",
+            "Heatmap",
+            "Choropleth Map",
+            "Spatial Clustering",
+            "Spatial Interpolation",
+            "Spatial Autocorrelation",
+            "Spatial Regression",
+            "Spatial Optimization",
+            "Spatial Interaction",
+            "Spatial Network Analysis",
+            "Spatial Temporal Analysis",
+            "Spatial Big Data",
+            "Spatial Machine Learning",
+            "Spatial AI",
+            "Spatial Data Mining",
+            "Spatial Data Science",
+            "Spatial Statistics",
+            "Spatial Econometrics",
+            "Spatial Modeling",
+            "Spatial Simulation",
+            "Spatial Visualization",
+            "Spatial Decision Support System",
+            "Spatial Planning",
+            "Spatial Marketing",
+            "Spatial Retail",
+            "Spatial Real Estate",
+            "Spatial Healthcare",
+            "Spatial Finance",
+            "Spatial Insurance",
+            "Spatial Logistics",
+            "Spatial Transportation",
+            "Spatial Urban Planning",
+            "Spatial Rural Planning",
+            "Spatial Environmental Planning",
+            "Spatial Natural Resource Management",
+            "Spatial Disaster Management",
+            "Spatial Emergency Management",
+            "Spatial Public Safety",
+            "Spatial Public Health",
+            "Spatial Education",
+            "Spatial Government",
+        ]
+        logger.debug(f"Number of terms defined: {len(self.terms)}")
 
-        # Ensure directories exist
-        self.glossary_dir = GLOSSARY_DIR  # Use the global GLOSSARY_DIR
-        self.glossary_dir.mkdir(exist_ok=True)
-        logging.info(f"Glossary directory: {self.glossary_dir.absolute()}")
-
-    # Rest of your class methods remain the same
-    def create_seo_slug(self, term):
-        """Create SEO-friendly slug from term"""
-        slug = term.lower()
-        slug = re.sub(r'[^a-z0-9]+', '-', slug)
-        slug = slug.strip('-')
-        slug = slug[:60]
-        return slug
-
-    def generate_simple_content(self, term):
-        """Generate simple content for a glossary term"""
+    def generate_glossary_page(self, term):
+        """Generate a glossary page for a given term using Gemini API."""
+        logger.debug(f"Generating glossary page for term: {term}")
+        
+        # Create a prompt for Gemini
+        prompt = f"""
+        Create a comprehensive glossary entry for the term "{term}" in the context of location intelligence and geospatial analysis.
+        
+        The entry should include:
+        1. A clear, concise definition (1-2 sentences)
+        2. A more detailed explanation (3-4 sentences)
+        3. Practical applications or use cases (3-5 bullet points)
+        4. Related terms or concepts (3-5 terms)
+        
+        Format the response as HTML that can be directly included in a webpage. Use appropriate HTML tags for structure.
+        The HTML should have a clean, professional appearance suitable for a technical glossary.
+        Do not include <!DOCTYPE>, <html>, <head>, or <body> tags - just the content HTML.
+        
+        Start with an <h1> tag for the term, followed by the definition and explanation in <p> tags.
+        Use <ul> and <li> tags for the applications and related terms sections.
+        Include appropriate <h2> or <h3> tags for section headings.
+        """
+        
         try:
-            logging.info(f"Generating simple content for: {term}")
-
-            # Generate a simple definition
-            definition_prompt = f"Provide a clear, concise definition of '{term}' in 2-3 sentences."
-            definition_response = self.model.generate_content(definition_prompt)
-            definition = definition_response.text.strip()
-
-            # Generate a simple article
-            article_prompt = f"Write a short article about '{term}' in 3-4 paragraphs."
-            article_response = self.model.generate_content(article_prompt)
-            article = article_response.text.strip()
-
-            # Create content dictionary
-            content = {
-                "term": term,
-                "slug": self.create_seo_slug(term),
-                "definition": definition,
-                "article": article,
-                "title": f"{term} - PlaceTrends Glossary",
-                "meta_description": f"Learn about {term} and its impact on business and demographics."
-            }
-
-            logging.info(f"Content generation complete for: {term}")
-            return content
-
-        except Exception as e:
-            logging.error(f"Error generating content for {term}: {e}")
-            return None
-
-    def save_html(self, content):
-        """Save content as an HTML file"""
-        try:
-            filepath = self.glossary_dir / f"{content['slug']}.html"
-            logging.info(f"Saving HTML file to: {filepath}")
-
-            html_content = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{html.escape(content['title'])}</title>
-    <meta name="description" content="{html.escape(content['meta_description'])}">
-    <link rel="stylesheet" href="../assets/css/style.css">
-</head>
-<body>
-    <header>
-        <div class="logo-container">
-            <img src="../assets/images/logo.avif" alt="PlaceTrends Logo" class="logo">
-            <h1>PlaceTrends Glossary</h1>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="../index.html">Home</a></li>
-                <li><a href="index.html">Glossary</a></li>
-                <li><a href="../soon/">Coming Soon</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <div class="main-container">
-        <div class="content-area">
-            <section id="glossary-content">
-                <h2>{html.escape(content['term'])}</h2>
-                <h3>Definition</h3>
-                <p>{content['definition']}</p>
-                <h3>Article</h3>
-                {content['article']}
-                <p><a href="index.html">Back to Glossary</a></p>
-            </section>
-        </div>
-    </div>
-
-    <footer>
-        <p>&copy; {datetime.now().year} PlaceTrends</p>
-    </footer>
-</body>
-</html>"""
-
-            with open(filepath, 'w', encoding='utf-8') as f:
+            # Generate content using Gemini
+            response = self.model.generate_content(prompt)
+            html_content = response.text
+            logger.debug(f"Successfully generated content for {term}, length: {len(html_content)}")
+            
+            # Create a file for the term
+            term_filename = term.lower().replace(" ", "-").replace("(", "").replace(")", "")
+            file_path = os.path.join(GLOSSARY_DIR, f"{term_filename}.html")
+            logger.debug(f"Writing to file: {file_path}")
+            
+            with open(file_path, "w", encoding="utf-8") as f:
                 f.write(html_content)
-
-            logging.info(f"Successfully saved HTML file: {filepath}")
-            logging.info(f"File exists after saving: {filepath.exists()}")
+            
+            logger.info(f"Created glossary page for {term} at {file_path}")
             return True
-
         except Exception as e:
-            logging.error(f"Error saving HTML file for {content['term']}: {e}")
+            logger.error(f"Error generating glossary page for {term}: {str(e)}")
             return False
 
-    def generate_glossary_index(self, terms):
-        """Generate the glossary/index.html file with links to all terms"""
-        try:
-            index_filepath = self.glossary_dir / "index.html"
-            logging.info(f"Generating glossary index at: {index_filepath}")
-
-            html_links = ""
-            for term in terms:
-                slug = self.create_seo_slug(term)
-                html_links += f'<li><a href="{slug}.html">{html.escape(term)}</a></li>\n'
-
-            index_content = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlaceTrends Glossary</title>
-    <meta name="description" content="Comprehensive glossary of demographic terms for business, real estate, and SEO">
-    <link rel="stylesheet" href="../assets/css/style.css">
-</head>
-<body>
-    <header>
-        <div class="logo-container">
-            <img src="../assets/images/logo.avif" alt="PlaceTrends Logo" class="logo">
-            <h1>PlaceTrends Glossary</h1>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="../index.html">Home</a></li>
-                <li><a href="#">Glossary</a></li>
-                <li><a href="../soon/">Coming Soon</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <div class="main-container">
-        <div class="content-area">
-            <section id="glossary-content">
-                <h2>Glossary of Terms</h2>
-                <p>Welcome to the PlaceTrends Glossary, your comprehensive resource for demographic terms and concepts relevant to business strategy, real estate, and online marketing.</p>
-                <ul>
-                    {html_links}
-                </ul>
-            </section>
-        </div>
-    </div>
-
-    <footer>
-        <p>&copy; {datetime.now().year} PlaceTrends. All rights reserved.</p>
-    </footer>
-</body>
-</html>"""
-
-            with open(index_filepath, 'w', encoding='utf-8') as f:
-                f.write(index_content)
-
-            logging.info(f"Successfully generated glossary index: {index_filepath}")
-            return True
-
-        except Exception as e:
-            logging.error(f"Error generating glossary index: {e}")
-            return False
-
-    def generate_glossary(self, terms):
-        """Generate glossary content for all terms"""
-        successful_terms = []
-
-        logging.info(f"Starting glossary generation for {len(terms)} terms")
-
-        for i, term in enumerate(terms):
-            logging.info(f"[{i+1}/{len(terms)}] Processing term: {term}")
-
-            # Generate content
-            content = self.generate_simple_content(term)
-            if content:
-                # Save HTML file
-                if self.save_html(content):
-                    successful_terms.append(term)
-                    logging.info(f"✓ Successfully processed term: {term}")
-                else:
-                    logging.warning(f"✗ Failed to save HTML for term: {term}")
-            else:
-                logging.warning(f"✗ Failed to generate content for term: {term}")
-
-        # Generate the glossary index page
-        self.generate_glossary_index(terms)
-
-        logging.info(f"Glossary generation complete!")
-        logging.info(f"Successfully processed {len(successful_terms)} out of {len(terms)} terms")
-        return len(successful_terms)
-
-def main():
-    # Define a small list of terms for testing
-    terms = [
-        "Demographic Segmentation",
-        "Age-Based Marketing",
-        "Income Demographics",
-        "Educational Attainment Demographics",
-        "Cultural Demographics",
-        "Location-Based Demographics"
-    ]
-
-    # Initialize generator with API key
-    api_key = os.getenv('GEMINI_API_KEY')
-    if not api_key:
-        logging.error("GEMINI_API_KEY environment variable not set")
-        raise ValueError("Please set GEMINI_API_KEY environment variable")
-
-    logging.info(f"API key found, length: {len(api_key)}")
-    generator = GlossaryGenerator(api_key)
-
-    # Generate glossary content
-    num_generated = generator.generate_glossary(terms)
-
-    logging.info(f"\nGlossary Generation Complete!")
-    logging.info(f"Generated {num_generated} glossary entries")
-    logging.info(f"Files saved in {generator.glossary_dir}")
+    def generate_all_pages(self):
+        """Generate glossary pages for all terms."""
+        logger.info(f"Starting to generate {len(self.terms)} glossary pages")
+        success_count = 0
+        
+        for term in self.terms:
+            if self.generate_glossary_page(term):
+                success_count += 1
+        
+        logger.info(f"Generated {success_count} out of {len(self.terms)} glossary pages")
+        return success_count
 
 if __name__ == "__main__":
-    main()
+    try:
+        logger.info("Starting glossary generation process")
+        generator = GlossaryGenerator()
+        pages_generated = generator.generate_all_pages()
+        logger.info(f"Glossary generation completed. Generated {pages_generated} pages.")
+    except Exception as e:
+        logger.error(f"Error in glossary generation process: {str(e)}")
+        raise

@@ -31,7 +31,10 @@ jobs:
       - name: Run glossary generator
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python scripts/glossary_generator.py
+        run: |
+          echo "Running glossary generator..."
+          python scripts/glossary_generator.py
+          echo "Glossary generator completed."
 
       - name: List generated files
         run: |

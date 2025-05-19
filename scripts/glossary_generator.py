@@ -4,7 +4,7 @@ import google.generativeai as genai
 from pathlib import Path
 
 # Set up detailed logging
-logging.basicConfig(level=logging.DEBUG, 
+logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -26,12 +26,30 @@ class GlossaryGenerator:
         if not GEMINI_API_KEY:
             logger.error("GEMINI_API_KEY environment variable is not set")
             raise ValueError("GEMINI_API_KEY environment variable is not set")
-        
+
         # Configure the Gemini API
         genai.configure(api_key=GEMINI_API_KEY)
-        self.model = genai.GenerativeModel('gemini-pro')
-        logger.debug("Gemini API configured successfully")
         
+        # Get available models and log them
+        try:
+            models = genai.list_models()
+            logger.debug(f"Available models: {[model.name for model in models]}")
+            
+            # Find a text generation model (look for the latest Gemini model)
+            text_models = [m for m in models if 'generateContent' in m.supported_generation_methods]
+            if not text_models:
+                raise ValueError("No text generation models available")
+            
+            # Use the first available text generation model
+            self.model = genai.GenerativeModel(text_models[0].name)
+            logger.debug(f"Using model: {text_models[0].name}")
+            
+        except Exception as e:
+            logger.error(f"Error configuring Gemini API: {str(e)}")
+            raise
+            
+        logger.debug("Gemini API configured successfully")
+
         # List of terms to generate glossary pages for
         self.terms = [
             "Location Intelligence",
@@ -90,40 +108,40 @@ class GlossaryGenerator:
     def generate_glossary_page(self, term):
         """Generate a glossary page for a given term using Gemini API."""
         logger.debug(f"Generating glossary page for term: {term}")
-        
+
         # Create a prompt for Gemini
         prompt = f"""
         Create a comprehensive glossary entry for the term "{term}" in the context of location intelligence and geospatial analysis.
-        
+
         The entry should include:
         1. A clear, concise definition (1-2 sentences)
         2. A more detailed explanation (3-4 sentences)
         3. Practical applications or use cases (3-5 bullet points)
         4. Related terms or concepts (3-5 terms)
-        
+
         Format the response as HTML that can be directly included in a webpage. Use appropriate HTML tags for structure.
         The HTML should have a clean, professional appearance suitable for a technical glossary.
         Do not include <!DOCTYPE>, <html>, <head>, or <body> tags - just the content HTML.
-        
+
         Start with an <h1> tag for the term, followed by the definition and explanation in <p> tags.
         Use <ul> and <li> tags for the applications and related terms sections.
         Include appropriate <h2> or <h3> tags for section headings.
         """
-        
+
         try:
             # Generate content using Gemini
             response = self.model.generate_content(prompt)
             html_content = response.text
             logger.debug(f"Successfully generated content for {term}, length: {len(html_content)}")
-            
+
             # Create a file for the term
             term_filename = term.lower().replace(" ", "-").replace("(", "").replace(")", "")
             file_path = os.path.join(GLOSSARY_DIR, f"{term_filename}.html")
             logger.debug(f"Writing to file: {file_path}")
-            
+
             with open(file_path, "w", encoding="utf-8") as f:
                 f.write(html_content)
-            
+
             logger.info(f"Created glossary page for {term} at {file_path}")
             return True
         except Exception as e:
@@ -134,11 +152,11 @@ class GlossaryGenerator:
         """Generate glossary pages for all terms."""
         logger.info(f"Starting to generate {len(self.terms)} glossary pages")
         success_count = 0
-        
+
         for term in self.terms:
             if self.generate_glossary_page(term):
                 success_count += 1
-        
+
         logger.info(f"Generated {success_count} out of {len(self.terms)} glossary pages")
         return success_count
 

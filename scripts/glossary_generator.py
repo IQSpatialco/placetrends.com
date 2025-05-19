@@ -2,6 +2,8 @@ import os
 import logging
 import google.generativeai as genai
 from pathlib import Path
+import time
+from bs4 import BeautifulSoup  # For HTML validation
 
 # Set up detailed logging
 logging.basicConfig(level=logging.DEBUG,
@@ -11,43 +13,61 @@ logger = logging.getLogger(__name__)
 # Constants
 GLOSSARY_DIR = os.path.join(os.getcwd(), "glossary")
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
-
-logger.debug(f"Script started, working directory: {os.getcwd()}")
-logger.debug(f"GEMINI_API_KEY present: {'Yes' if GEMINI_API_KEY else 'No'}")
-logger.debug(f"GLOSSARY_DIR path: {GLOSSARY_DIR}")
-logger.debug(f"GLOSSARY_DIR exists: {os.path.exists(GLOSSARY_DIR)}")
+MAX_RETRIES = 3  # Maximum retries for API calls
+RETRY_DELAY = 2  # Initial delay in seconds, will be doubled on each retry
 
 # Create glossary directory if it doesn't exist
 os.makedirs(GLOSSARY_DIR, exist_ok=True)
-logger.debug(f"After creation, GLOSSARY_DIR exists: {os.path.exists(GLOSSARY_DIR)}")
 
 class GlossaryGenerator:
     def __init__(self):
+        """Initializes the GlossaryGenerator class."""
         if not GEMINI_API_KEY:
             logger.error("GEMINI_API_KEY environment variable is not set")
             raise ValueError("GEMINI_API_KEY environment variable is not set")
 
         # Configure the Gemini API
         genai.configure(api_key=GEMINI_API_KEY)
-        
+
         # Get available models and log them
         try:
             models = genai.list_models()
-            logger.debug(f"Available models: {[model.name for model in models]}")
+            model_names = [model.name for model in models]
+            logger.debug(f"Available models: {model_names}")
+
+            # Find a suitable text generation model - look for the latest Gemini model
+            # Try specific known models first
+            preferred_models = [
+                "models/gemini-1.5-pro",
+                "models/gemini-1.5-flash",
+                "models/gemini-pro",
+                "models/gemini-1.0-pro"
+            ]
             
-            # Find a text generation model (look for the latest Gemini model)
-            text_models = [m for m in models if 'generateContent' in m.supported_generation_methods]
-            if not text_models:
-                raise ValueError("No text generation models available")
+            # Try to use one of our preferred models if available
+            selected_model = None
+            for model_name in preferred_models:
+                if model_name in model_names:
+                    selected_model = model_name
+                    break
             
-            # Use the first available text generation model
-            self.model = genai.GenerativeModel(text_models[0].name)
-            logger.debug(f"Using model: {text_models[0].name}")
+            # If none of our preferred models are available, try to find any Gemini model
+            if not selected_model:
+                for model_name in model_names:
+                    if "gemini" in model_name.lower() and not "vision" in model_name.lower():
+                        selected_model = model_name
+                        break
             
+            if not selected_model:
+                raise ValueError("No suitable text generation models available")
+            
+            self.model = genai.GenerativeModel(selected_model)
+            logger.debug(f"Using model: {selected_model}")
+
         except Exception as e:
             logger.error(f"Error configuring Gemini API: {str(e)}")
             raise
-            
+
         logger.debug("Gemini API configured successfully")
 
         # List of terms to generate glossary pages for
@@ -105,6 +125,40 @@ class GlossaryGenerator:
         ]
         logger.debug(f"Number of terms defined: {len(self.terms)}")
 
+    def _generate_content(self, prompt, term):
+        """
+        Generates content using the Gemini API with retry logic.
+
+        Args:
+            prompt (str): The prompt to send to the Gemini API.
+            term (str): The term being processed.
+
+        Returns:
+            str: The generated content, or None on failure.
+        """
+        retries = 0
+        delay = RETRY_DELAY
+        while retries < MAX_RETRIES:
+            try:
+                response = self.model.generate_content(prompt)
+                if response.text:
+                    return response.text
+                else:
+                    logger.warning(f"Empty response from Gemini API for term: {term}")
+                    return None
+
+            except Exception as e:
+                logger.error(f"Error generating content for {term} (attempt {retries + 1}): {str(e)}")
+                retries += 1
+                if retries < MAX_RETRIES:
+                    logger.info(f"Retrying in {delay} seconds...")
+                    time.sleep(delay)
+                    delay *= 2  # Exponential backoff
+                else:
+                    logger.error(f"Failed to generate content for {term} after {MAX_RETRIES} attempts")
+                    return None
+        return None
+
     def generate_glossary_page(self, term):
         """Generate a glossary page for a given term using Gemini API."""
         logger.debug(f"Generating glossary page for term: {term}")
@@ -128,26 +182,52 @@ class GlossaryGenerator:
         Include appropriate <h2> or <h3> tags for section headings.
         """
 
+        html_content = self._generate_content(prompt, term)
+        if not html_content:
+            return False
+
+        # Validate the generated HTML
+        if not self._validate_html(html_content, term):
+            return False
+        
+        # Create a file for the term
+        term_filename = term.lower().replace(" ", "-").replace("(", "").replace(")", "")
+        file_path = os.path.join(GLOSSARY_DIR, f"{term_filename}.html")
+        logger.debug(f"Writing to file: {file_path}")
+
         try:
-            # Generate content using Gemini
-            response = self.model.generate_content(prompt)
-            html_content = response.text
-            logger.debug(f"Successfully generated content for {term}, length: {len(html_content)}")
-
-            # Create a file for the term
-            term_filename = term.lower().replace(" ", "-").replace("(", "").replace(")", "")
-            file_path = os.path.join(GLOSSARY_DIR, f"{term_filename}.html")
-            logger.debug(f"Writing to file: {file_path}")
-
             with open(file_path, "w", encoding="utf-8") as f:
                 f.write(html_content)
-
             logger.info(f"Created glossary page for {term} at {file_path}")
             return True
         except Exception as e:
-            logger.error(f"Error generating glossary page for {term}: {str(e)}")
+            logger.error(f"Error writing to file {file_path} for term {term}: {str(e)}")
             return False
+        
 
+    def _validate_html(self, html_content, term):
+        """
+        Validates the generated HTML using BeautifulSoup.
+
+        Args:
+            html_content (str): The HTML content to validate.
+            term (str):  The term
+
+        Returns:
+            bool: True if the HTML is valid, False otherwise.
+        """
+        try:
+            soup = BeautifulSoup(html_content, 'html.parser')
+            # Check for essential tags and structure (you can customize this)
+            if soup.find('h1') and soup.find('p'):  # Basic check, refine as needed
+                return True
+            else:
+                logger.warning(f"HTML validation failed for {term}: Missing essential tags")
+                return False
+        except Exception as e:
+            logger.error(f"Error validating HTML for {term}: {str(e)}")
+            return False
+        
     def generate_all_pages(self):
         """Generate glossary pages for all terms."""
         logger.info(f"Starting to generate {len(self.terms)} glossary pages")

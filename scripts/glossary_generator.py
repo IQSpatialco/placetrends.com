@@ -15,7 +15,7 @@ logging.basicConfig(
 )
 
 # Get the repository root directory
-REPO_ROOT = Path(__file__).parent.parent.absolute()
+REPO_ROOT = Path(os.environ.get('GITHUB_WORKSPACE', os.getcwd()))
 # Define glossary directory relative to repo root
 GLOSSARY_DIR = REPO_ROOT / "glossary"
 
@@ -31,6 +31,7 @@ class GlossaryGenerator:
         self.glossary_dir.mkdir(exist_ok=True)
         logging.info(f"Glossary directory: {self.glossary_dir.absolute()}")
 
+    # Rest of your class methods remain the same
     def create_seo_slug(self, term):
         """Create SEO-friendly slug from term"""
         slug = term.lower()

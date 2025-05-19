@@ -46,8 +46,8 @@ jobs:
           echo "Repository root: $GITHUB_WORKSPACE"
           echo "Directory structure:"
           find . -type d -maxdepth 3 | sort
-          echo "Environment variables:"
-          env | grep -i gemini
+          echo "Environment variables (Gemini):"
+          env | grep -i gemini || echo "No Gemini environment variables found"
 
       - name: Test file creation
         run: |

@@ -14,6 +14,11 @@ logging.basicConfig(
     handlers=[logging.StreamHandler(sys.stdout)]
 )
 
+# Get the repository root directory
+REPO_ROOT = Path(__file__).parent.parent.absolute()
+# Define glossary directory relative to repo root
+GLOSSARY_DIR = REPO_ROOT / "glossary"
+
 class GlossaryGenerator:
     def __init__(self, api_key):
         # Configure Gemini API
@@ -22,7 +27,7 @@ class GlossaryGenerator:
         self.model = genai.GenerativeModel('gemini-pro')
 
         # Ensure directories exist
-        self.glossary_dir = Path("glossary")
+        self.glossary_dir = GLOSSARY_DIR  # Use the global GLOSSARY_DIR
         self.glossary_dir.mkdir(exist_ok=True)
         logging.info(f"Glossary directory: {self.glossary_dir.absolute()}")
 

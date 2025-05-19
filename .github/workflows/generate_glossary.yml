@@ -56,3 +56,12 @@ jobs:
           
           # Push changes
           git push https://${{ secrets.REPO_ACCESS_TOKEN }}@github.com/IQSpatialco/placetrends.com.git main
+
+          - name: Debug directory structure
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Repository root: $GITHUB_WORKSPACE"
+          echo "Directory structure:"
+          find . -type d -maxdepth 3 | sort
+          echo "Environment variables:"
+           env | grep -i gemini

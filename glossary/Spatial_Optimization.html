@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Definition and applications of Spatial Optimization in spatial analysis and location intelligence">
+    <meta name="keywords" content="Spatial Optimization, spatial analysis, GIS, location intelligence, geospatial">
+    <meta name="author" content="PlaceTrends">
+    <meta property="og:title" content="Spatial Optimization - Spatial Analysis Term | PlaceTrends">
+    <meta property="og:description" content="Learn about Spatial Optimization and its applications in spatial analysis and location intelligence">
+    <meta property="og:image" content="/assets/images/logo.avif">
+    <meta property="og:url" content="https://placetrends.com/glossary/Spatial_Optimization.html">
+    <meta property="og:type" content="article">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>Spatial Optimization - Spatial Analysis Term | PlaceTrends</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/images/logo.avif" type="image/avif">
+    <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L39ES96CQC"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-L39ES96CQC');
+    </script>
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6348225556465874" crossorigin="anonymous"></script>
+
+    <style>
+        /* Reset all margins and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        /* Header styling */
+        header {
+            background-color: white;
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo {
+            height: 40px;
+            margin-right: 10px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            color: #3498db;
+            font-size: 1.2rem;
+            margin-top: 1.2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Hero section */
+        .hero {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            color: white;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .cta-button:hover {
+            background-color: #c0392b;
+        }
+
+        /* Main content layout with side ads */
+        .main-container {
+            display: flex;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        /* Side ad containers */
+        .side-ad-container {
+            width: 160px;
+            background-color: #f9f9f9;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        /* Top and bottom ad containers */
+        .ad-container {
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #f9f9f9;
+            flex-shrink: 0;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Center content area */
+        .content-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Term content styling */
+        .term-content {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .term-content p {
+            line-height: 1.7;
+        }
+
+        .term-content ul {
+            margin-left: 2rem;
+        }
+
+        .term-content li {
+            margin-bottom: 0.8rem;
+        }
+
+        /* Related terms section */
+        .related-terms {
+            background-color: #f0f7ff;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            font-size: 0.8rem;
+            color: #666;
+            border-top: 1px solid #eee;
+            background-color: white;
+            flex-shrink: 0;
+        }
+
+        footer a {
+            color: #3498db;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .side-ad-container {
+                width: 120px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .side-ad-container {
+                width: 100%;
+                height: auto;
+                min-height: 100px;
+                flex-direction: row;
+                justify-content: center;
+            }
+            
+            .side-ad-vertical {
+                display: none;
+            }
+            
+            .side-ad-horizontal {
+                display: block;
+                width: 100%;
+                max-width: 728px;
+                height: 90px;
+            }
+            
+            header {
+                padding: 10px 0;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .content-area {
+                padding: 15px;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .side-ad-vertical {
+                display: block;
+                width: 160px;
+                height: 600px;
+                margin-bottom: 20px;
+            }
+            
+            .side-ad-horizontal {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.3rem;
+            }
+            
+            h2 {
+                font-size: 1.2rem;
+            }
+            
+            h3 {
+                font-size: 1.1rem;
+            }
+            
+            .logo {
+                height: 35px;
+            }
+            
+            .hero {
+                padding: 30px 15px;
+            }
+            
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            
+            .cta-button {
+                padding: 10px 20px;
+            }
+            
+            footer {
+                font-size: 0.75rem;
+            }
+            
+            footer a {
+                margin: 0 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="/assets/images/logo.avif" alt="PlaceTrends Logo" class="logo">
+            <h1>PlaceTrends</h1>
+        </div>
+    </header>
+
+    <!-- Hero section -->
+    <section class="hero">
+        <h1>Spatial Optimization</h1>
+        <p>Spatial Analysis Term Definition and Applications</p>
+    </section>
+
+    <!-- Top ad container -->
+    <div class="ad-container">
+        <ins class="adsbygoogle"
+             style="display:block; width:100%; height:90px;"
+             data-ad-client="ca-pub-6348225556465874"
+             data-ad-slot="YOUR_AD_SLOT_ID_1"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <!-- Main container with side ads -->
+    <div class="main-container">
+        <!-- Left side ad -->
+        <div class="side-ad-container">
+            <!-- Vertical ad for desktop -->
+            <ins class="adsbygoogle side-ad-vertical"
+                 style="display:inline-block; width:160px; height:600px;"
+                 data-ad-client="ca-pub-6348225556465874"
+                 data-ad-slot="YOUR_LEFT_SKYSCRAPER_SLOT_ID"></ins>
+            
+            <!-- Horizontal ad for mobile -->
+            <ins class="adsbygoogle side-ad-horizontal"
+                 style="display:none; width:100%; height:90px;"
+                 data-ad-client="ca-pub-6348225556465874"
+                 data-ad-slot="YOUR_MOBILE_SLOT_ID"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <!-- Center content area -->
+        <div class="content-area">
+            <div class="term-content">
+                <h1>Spatial Optimization</h1>
+<p>Spatial Optimization is the process of finding the best spatial arrangement or location of facilities, resources, or activities to achieve specific objectives while considering spatial constraints and relationships. It combines optimization algorithms with geographic analysis to solve location-based problems.</p>
+<p>This approach considers factors such as distance, accessibility, capacity, and spatial interactions to determine optimal solutions for complex spatial problems. Spatial optimization helps organizations make efficient use of resources, minimize costs, maximize coverage, and improve service delivery through strategic spatial decision-making.</p>
+<h2>Practical Applications</h2>
+<ul>
+<li>Emergency facility location planning for optimal response coverage</li>
+<li>Supply chain network design and warehouse location optimization</li>
+<li>Public transportation route planning and schedule optimization</li>
+<li>Renewable energy facility siting for maximum efficiency</li>
+<li>Retail location selection for market coverage and profitability</li>
+</ul>
+<h2>Related Terms</h2>
+<ul>
+<li>Location-Allocation</li>
+<li>Facility Location</li>
+<li>Network Optimization</li>
+<li>Spatial Decision Support</li>
+<li>Operations Research</li>
+</ul>
+            </div>
+
+            <div class="related-terms">
+                <h3>Explore More Spatial Analysis Terms</h3>
+                <p>Browse our complete glossary of spatial analysis and location intelligence terms:</p>
+                <ul>
+                    <li><a href="/glossary/Location_Intelligence.html">Location Intelligence</a></li>
+                    <li><a href="/glossary/Geospatial_Analysis.html">Geospatial Analysis</a></li>
+                    <li><a href="/glossary/Spatial_Data.html">Spatial Data</a></li>
+                    <li><a href="/glossary/Geographic_Information_System_GIS.html">Geographic Information System (GIS)</a></li>
+                </ul>
+            </div>
+
+            <div class="cta-section">
+                <h2>Want to Apply These Concepts?</h2>
+                <p>Explore our spatial analysis tools and datasets to put these concepts into practice.</p>
+                <a href="https://place-trends-rmkenv.replit.app/" class="cta-button">Launch PlaceTrends App</a>
+            </div>
+        </div>
+
+        <!-- Right side ad -->
+        <div class="side-ad-container">
+            <!-- Vertical ad for desktop -->
+            <ins class="adsbygoogle side-ad-vertical"
+                 style="display:inline-block; width:160px; height:600px;"
+                 data-ad-client="ca-pub-6348225556465874"
+                 data-ad-slot="YOUR_RIGHT_SKYSCRAPER_SLOT_ID"></ins>
+            
+            <!-- Horizontal ad for mobile -->
+            <ins class="adsbygoogle side-ad-horizontal"
+                 style="display:none; width:100%; height:90px;"
+                 data-ad-client="ca-pub-6348225556465874"
+                 data-ad-slot="YOUR_MOBILE_SLOT_ID_2"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+
+    <!-- Bottom ad container -->
+    <div class="ad-container">
+        <ins class="adsbygoogle"
+             style="display:block; width:100%; height:90px;"
+             data-ad-client="ca-pub-6348225556465874"
+             data-ad-slot="YOUR_AD_SLOT_ID_2"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <footer>
+        &copy; 2025 PlaceTrends. All rights reserved. |
+        <a href="/glossary/">Glossary</a> |
+        <a href="/privacy/">Privacy Policy</a>
+    </footer>
+
+    <!-- Structured data for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Spatial Optimization - Spatial Analysis Term",
+        "description": "Definition and applications of Spatial Optimization in spatial analysis and location intelligence",
+        "author": {
+            "@type": "Organization",
+            "name": "PlaceTrends"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "PlaceTrends",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://placetrends.com/assets/images/logo.avif"
+            }
+        },
+        "datePublished": "2025-01-01",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://placetrends.com/glossary/Spatial_Optimization.html"
+        }
+    }
+    </script>
+</body>
+</html>

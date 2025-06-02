@@ -1,3 +1,18 @@
+# placetrends robots.txt – updated 2025-06-02
+
 User-agent: *
-Disallow: /
+# Block internal search results pages
+Disallow: /*?s=
+# Block admin and login pages
+Disallow: /admin/
+Disallow: /login/
+# Block duplicate or low-value content (customize as needed)
+Disallow: /tmp/
+Disallow: /test/
+# Allow access to essential resources
+Allow: /wp-content/uploads/
+Allow: /assets/css/
+Allow: /assets/js/
+
+# Sitemap location
 Sitemap: https://placetrends.com/sitemap.xml

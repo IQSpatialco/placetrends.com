@@ -288,6 +288,89 @@
             border-bottom: none;
         }
 
+        /* Glossary section styling */
+        .glossary-section {
+            background: #fffbe6;
+            border-left: 6px solid #e67e22;
+            padding: 28px 20px;
+            margin: 36px 0 32px 0;
+            border-radius: 8px;
+            max-width: 600px;
+            box-shadow: 0 2px 8px rgba(230,126,34,0.07);
+        }
+
+        .glossary-section h2 {
+            color: #e67e22;
+            margin-top: 0;
+            border-bottom: none;
+        }
+
+        .glossary-section a {
+            font-weight: bold;
+            color: #e67e22;
+            text-decoration: none;
+        }
+
+        .glossary-section a:hover {
+            text-decoration: underline;
+        }
+
+        .glossary-button {
+            display: inline-block;
+            margin-top: 12px;
+            background: #e67e22;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .glossary-button:hover {
+            background-color: #d35400;
+        }
+
+        /* Newsletter section styling */
+        .newsletter-section {
+            background: #3498db;
+            color: #fff;
+            text-align: center;
+            padding: 40px 20px 36px 20px;
+            border-radius: 8px;
+            margin: 40px 0 32px 0;
+            max-width: 600px;
+            box-shadow: 0 2px 8px rgba(52,152,219,0.07);
+        }
+
+        .newsletter-section h2 {
+            margin-top: 0;
+            font-size: 2rem;
+            color: white;
+            border-bottom: none;
+        }
+
+        .newsletter-section p {
+            font-size: 1.1rem;
+            margin-bottom: 22px;
+        }
+
+        .newsletter-button {
+            background: #e67e22;
+            color: #fff;
+            padding: 14px 36px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: background 0.2s;
+            display: inline-block;
+        }
+
+        .newsletter-button:hover {
+            background-color: #d35400;
+        }
+
         /* Footer */
         footer {
             text-align: center;
@@ -376,6 +459,13 @@
             .feature-grid {
                 grid-template-columns: 1fr;
             }
+
+            .glossary-section,
+            .newsletter-section {
+                max-width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+            }
         }
         
         @media (min-width: 769px) {
@@ -426,6 +516,23 @@
             
             footer a {
                 margin: 0 3px;
+            }
+
+            .newsletter-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .newsletter-section p {
+                font-size: 1rem;
+            }
+
+            .newsletter-button {
+                padding: 12px 24px;
+                font-size: 1rem;
+            }
+
+            .glossary-button {
+                padding: 8px 16px;
             }
         }
     </style>
@@ -636,6 +743,22 @@
                     <li>Advanced affordability metrics and forecasting tools</li>
                     <li>Customizable reports and data export options</li>
                 </ul>
+            </section>
+
+            <!-- Highlighted Glossary Section -->
+            <section class="glossary-section">
+                <h2>Explore the PlaceTrends Glossary</h2>
+                <p>
+                    New to spatial analysis or location intelligence? Our <a href="/glossary/">Glossary</a> explains all the key terms you'll encounter on PlaceTrends, from GIS basics to advanced geospatial analytics.
+                </p>
+                <a href="/glossary/" class="glossary-button">Browse the Glossary</a>
+            </section>
+
+            <!-- Newsletter Call to Action Section -->
+            <section class="newsletter-section">
+                <h2>Stay Ahead with PlaceTrends Insights</h2>
+                <p>Subscribe to our free newsletter for the latest ZIP code trends, real estate insights, and exclusive data updates.</p>
+                <a href="https://placetrends.beehiiv.com/subscribe" target="_blank" rel="noopener" class="newsletter-button">Subscribe Now</a>
             </section>
         </div>
 

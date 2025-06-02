@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Homepage -->
   <url>
     <loc>https://placetrends.com/</loc>
     <priority>1.0</priority>
   </url>
+
+  <!-- Main Sections -->
   <url>
     <loc>https://placetrends.com/glossary/</loc>
     <priority>0.8</priority>
@@ -16,4 +19,35 @@
     <loc>https://placetrends.com/soon/</loc>
     <priority>0.5</priority>
   </url>
+
+  <!-- Glossary Subpages -->
+  <url><loc>https://placetrends.com/glossary/location-intelligence/</loc></url>
+  <url><loc>https://placetrends.com/glossary/geospatial-analysis/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-data/</loc></url>
+  <url><loc>https://placetrends.com/glossary/geographic-information-system/</loc></url>
+  <url><loc>https://placetrends.com/glossary/geocoding/</loc></url>
+  <url><loc>https://placetrends.com/glossary/heatmap/</loc></url>
+  <url><loc>https://placetrends.com/glossary/choropleth-map/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-visualization/</loc></url>
+  <url><loc>https://placetrends.com/glossary/point-of-interest/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-clustering/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-interpolation/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-autocorrelation/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-regression/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-optimization/</loc></url>
+  <url><loc>https://placetrends.com/glossary/trade-area/</loc></url>
+  <url><loc>https://placetrends.com/glossary/catchment-area/</loc></url>
+  <url><loc>https://placetrends.com/glossary/isochrone/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-marketing/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-retail/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-big-data/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-machine-learning/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-ai/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-data-mining/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-data-science/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-real-estate/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-healthcare/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-finance/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-insurance/</loc></url>
+  <url><loc>https://placetrends.com/glossary/spatial-logistics/</loc></url>
 </urlset>

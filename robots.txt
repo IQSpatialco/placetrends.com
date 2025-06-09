@@ -1,18 +1,74 @@
-# placetrends robots.txt – updated 2025-06-02
+# placetrends.com robots.txt – updated 2025-06-02
 
+# General directives for all robots
 User-agent: *
-# Block internal search results pages
+Disallow: /ui/
+Disallow: /api/
+Disallow: /visit/
+Disallow: /as/
+Disallow: /legal/
 Disallow: /*?s=
-# Block admin and login pages
 Disallow: /admin/
 Disallow: /login/
-# Block duplicate or low-value content (customize as needed)
 Disallow: /tmp/
 Disallow: /test/
-# Allow access to essential resources
+
 Allow: /wp-content/uploads/
 Allow: /assets/css/
 Allow: /assets/js/
+
+# Specific bot directives with crawl delay
+User-agent: Meta-ExternalFetcher
+User-agent: ChatGPT-User
+User-agent: Clause-User
+User-agent: Perplexity-User
+User-agent: MistralAI-User
+Crawl-delay: 30
+Disallow: /ui/
+Disallow: /api/
+Disallow: /visit/
+Disallow: /as/
+Disallow: /legal/
+Disallow: /c/
+
+# Aggressive bots - disallow all
+User-agent: CCBot
+User-agent: Rogerbot
+User-agent: Exabot
+User-agent: MJ12bot
+User-agent: Dotbot
+User-agent: Gigabot
+User-agent: SemrushBot
+User-agent: SemrushBot-SA
+User-agent: SemrushBot-BA
+User-agent: SemrushBot-SI
+User-agent: SemrushBot-SWA
+User-agent: SemrushBot-CT
+User-agent: SemrushBot-COUB
+User-agent: SplitSignalBot
+User-agent: FriendlyCrawler
+User-agent: ImagesiftBot
+User-agent: Barkrowler
+User-agent: BLEXBot
+User-agent: DataForSeoBot
+User-agent: CensysInspect
+User-agent: Expanse
+User-agent: internet-measurement
+User-agent: serpstatbot
+User-agent: EzoicBot
+User-agent: EzoicBot-Nicheiq
+User-agent: EzoicBot-AdsTxt
+User-agent: EzoicBot-Sitespeed
+User-agent: EzoicBot-IntegrationCheck
+User-agent: turnitinbot
+User-agent: SenutoBot
+User-agent: AwarioRssBot
+User-agent: AwarioSmartBot
+User-agent: MegaIndex.ru
+User-agent: spbot
+User-agent: MauiBot
+User-agent: Zoominfobot
+Disallow: /
 
 # Sitemap location
 Sitemap: https://placetrends.com/sitemap.xml
